@@ -361,3 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+ThirdMessage.UI/ThirdMessageUI/.idea/
+ThirdMessage.UI/ThirdMessageUI/.qtcreator/
+ThirdMessage.UI/ThirdMessageUI/build/
+ThirdMessage.UI/ThirdMessageUI/cmake-build-debug-mingw_qt/
+ThirdMessage.APIBridge/.idea/
+ThirdMessage.APIBridge/.mvn/
+ThirdMessage.ServierAPI/ThirdMessage.ServierAPI/lib/
+ThirdMessage.ServierAPI/.idea/
