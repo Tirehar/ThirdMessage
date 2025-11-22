@@ -1,0 +1,6 @@
+@ThirdMessage.ServierAPI_HostAddress = http://localhost:5070
+
+GET {{ThirdMessage.ServierAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
