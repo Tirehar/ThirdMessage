@@ -1,6 +1,6 @@
 @ThirdMessage.ServierAPI_HostAddress = http://localhost:5070
 
-GET {{ThirdMessage.ServierAPI_HostAddress}}/weatherforecast/
+POST {{ThirdMessage.ServierAPI_HostAddress}}/api/Login/Login
 Accept: application/json
 
 ###

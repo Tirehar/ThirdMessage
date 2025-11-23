@@ -14,6 +14,6 @@ public class ChatHub : Hub
             Code = 0,
             Model = new EmptyModel()
         };
-        await Clients.All.SendAsync("ReceiveMessage", JsonHelper.ToJson(response));
+        await Clients.All.SendAsync("ReceiveMessage", response);
     }
 }
