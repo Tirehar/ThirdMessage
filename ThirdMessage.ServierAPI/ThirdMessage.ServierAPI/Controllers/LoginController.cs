@@ -11,6 +11,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     public ReplyModel<LoginReplyModel> Login([FromBody] LoginModel model)
     {
+        Console.WriteLine("收到登录请求:账户" + model.Account );
         return new ReplyModel<LoginReplyModel>
         {
             Code = 0,
