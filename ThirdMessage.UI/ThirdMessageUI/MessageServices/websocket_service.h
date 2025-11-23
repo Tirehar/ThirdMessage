@@ -1,7 +1,6 @@
 #ifndef WEBSOCKET_SERVICE_H
 #define WEBSOCKET_SERVICE_H
 
-#include <QObject>
 #include <QWebSocket>
 
 class WebSocketService : public QObject

@@ -1,5 +1,5 @@
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Windows
 import QtQuick.Shapes
 import ThirdMessageUI.WebSocket
 import QtQuick.Layouts

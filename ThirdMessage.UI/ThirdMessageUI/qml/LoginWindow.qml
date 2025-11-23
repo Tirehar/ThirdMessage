@@ -3,6 +3,7 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 Window {
+    id: loginWindow
     width: 640
     height: 360
     visible: true
@@ -42,8 +43,20 @@ Window {
                 width:260
                 height:48
                 onClicked:{
-                    // Handle login logic here
+                    loginViewModel.login(usernameInput.text, passwordInput.text)
                 }
+            }
+        }
+    }
+
+    Connections{
+        target: loginViewModel
+        function onLoginResponse(successful){
+            console.debug("登录回应：" + successful)
+            if(successful){
+                loginWindow.close();
+                var mainWindow = Qt.createComponent("Main.qml");
+                mainWindow.createObject(null, { visible: true});
             }
         }
     }
