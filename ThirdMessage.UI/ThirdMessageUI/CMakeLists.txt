@@ -8,6 +8,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS WebSockets)
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -29,6 +30,7 @@ qt_add_qml_module(appThirdMessageUI
         SOURCES ViewModels/MainViewModel.cpp ViewModels/MainViewModel.h
         QML_FILES qml/LoginWindow.qml
         SOURCES MessageServices/networkservice.h MessageServices/networkservice.cpp
+        SOURCES MessageServices/message_service.h MessageServices/message_service.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -47,6 +49,7 @@ target_link_libraries(appThirdMessageUI
 )
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::WebSockets)
+target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 
 include(GNUInstallDirs)

@@ -6,8 +6,10 @@ namespace ThirdMessage.ServierAPI.Hubs;
 
 public class ChatHub : Hub
 {
-    public async Task SendMessage(string user, string message)
+    public async Task SendMessage(string json)
     {
+        var model = JsonHelper.ToModel<MessageModel>(json);
+        Console.WriteLine("服务端收到消息" + model.Message);
         var response = new ReplyModel<EmptyModel> 
         { 
             Message = "正常响应",

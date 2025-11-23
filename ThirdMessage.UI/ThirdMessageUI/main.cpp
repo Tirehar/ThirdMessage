@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
 
+#include "MessageServices/message_service.h"
 #include "MessageServices/websocket_service.h"
 #include "ViewModels/LoginVIewModel.h"
 #include "ViewModels/MainViewModel.h"
@@ -37,6 +38,9 @@ int main(int argc, char *argv[])
 
     qmlRegisterSingletonType<WebSocketService>("ThirdMessageUI.WebSocket", 1, 0, "WebSocketService", [](QQmlEngine *qmlEngine, QJSEngine *jsEngine) -> QObject* {
         return WebSocketService::getInstance();
+    });
+    qmlRegisterSingletonType<WebSocketService>("ThirdMessageUI.Message", 1, 0, "MessageService", [](QQmlEngine *qmlEngine, QJSEngine *jsEngine) -> QObject* {
+        return MessageService::getInstance();
     });
 
 

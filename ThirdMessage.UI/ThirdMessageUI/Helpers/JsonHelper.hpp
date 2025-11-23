@@ -27,6 +27,10 @@ public:
         return json;
     }
 
+    static QString toJsonString(const QJsonObject &obj) {
+        return QString::fromUtf8(QJsonDocument(obj).toJson(QJsonDocument::Compact));
+    }
+
     static QString toJsonString(const QObject *obj) {
         return QString::fromUtf8(QJsonDocument(toJsonObject(obj)).toJson(QJsonDocument::Compact));
     }

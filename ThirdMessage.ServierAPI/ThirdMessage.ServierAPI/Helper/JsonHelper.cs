@@ -21,7 +21,7 @@ public static class JsonHelper
     /// <typeparam name="T">要反序列化为的对象类型。</typeparam>
     /// <param name="json">要反序列化的 JSON 字符串。</param>
     /// <returns>从 JSON 字符串反序列化得到的对象。</returns>
-    public static T ToObject<T>(string json)
+    public static T ToModel<T>(string json)
     {
         return JsonSerializer.Deserialize<T>(json);
     }

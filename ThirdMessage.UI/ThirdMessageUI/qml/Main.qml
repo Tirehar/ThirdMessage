@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls.Windows
 import QtQuick.Shapes
 import ThirdMessageUI.WebSocket
+import ThirdMessageUI.Message
 import QtQuick.Layouts
 import "./controls"
 
@@ -76,7 +77,8 @@ Window {
                                 Layout.rightMargin: 10;
                                 Layout.bottomMargin: 20;
                                 onClicked: {
-                                    WebSocketService.sendMessage(messageText.text);
+                                    MessageService.sendMessage(messageText.text)
+                                    //WebSocketService.sendMessage(messageText.text);
                                 }
                             }
                         }

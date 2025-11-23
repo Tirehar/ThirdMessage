@@ -75,15 +75,10 @@ public class APIBridge extends WebSocketServer {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, String message) {
-        System.out.println("Message: " + message);
-        // 假设消息格式为 "user:message"
-        String[] parts = message.split(":", 2);
-        String user = parts.length > 1 ? parts[0] : "JavaBridgeClient";
-        String msg = parts.length > 1 ? parts[1] : message;
-
+    public void onMessage(WebSocket webSocket, String messageJson) {
+        System.out.println("Message: " + messageJson);
         // 调用 Hub 的 SendMessage 方法
-        hubConnection.invoke("SendMessage", user.trim(), msg.trim());
+        hubConnection.invoke("SendMessage", messageJson);
     }
 
     @Override
