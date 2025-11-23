@@ -18,8 +18,10 @@ qt_add_qml_module(appThirdMessageUI
     URI ThirdMessageUI
     QML_FILES
         qml/Main.qml
-        qml/SendButton.qml
+        qml/controls/SendButton.qml
         SOURCES MessageServices/websocket_service.h MessageServices/websocket_service.cpp
+        SOURCES ViewModels/MainViewModel.cpp ViewModels/MainViewModel.h
+        QML_FILES qml/LoginWindow.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

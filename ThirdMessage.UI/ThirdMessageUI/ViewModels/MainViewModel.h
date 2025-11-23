@@ -4,9 +4,11 @@
 
 #ifndef THIRDMESSAGEUI_MAINVIEWMODEL_H
 #define THIRDMESSAGEUI_MAINVIEWMODEL_H
+#include <QObject>
 
 
-class MainViewModel {
+class MainViewModel : public QObject{
+    Q_OBJECT
 };
 
 

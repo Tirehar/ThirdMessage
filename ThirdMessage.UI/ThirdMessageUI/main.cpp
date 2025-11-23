@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         return WebSocketService::getInstance();
     });
 
-    engine.loadFromModule("ThirdMessageUI", "Main");
+    engine.loadFromModule("ThirdMessageUI", "LoginWindow");
 
     return app.exec();
 }
