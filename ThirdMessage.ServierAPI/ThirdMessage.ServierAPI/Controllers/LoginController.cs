@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Models;
-using ThirdMessage.ServierAPI.Models.LoginModels;
+using ThirdMessage.ServierAPI.Models.ReplyModels;
 
 namespace ThirdMessage.ServierAPI.Controllers;
 

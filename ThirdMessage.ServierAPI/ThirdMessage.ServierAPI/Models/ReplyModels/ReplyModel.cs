@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ThirdMessage.ServierAPI.Models;
+namespace ThirdMessage.ServierAPI.Models.ReplyModels;
 
 public class ReplyModel<T> where T : class
 {

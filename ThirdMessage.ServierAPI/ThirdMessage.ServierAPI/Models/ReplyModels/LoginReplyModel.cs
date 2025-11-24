@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ThirdMessage.ServierAPI.Models.LoginModels;
+namespace ThirdMessage.ServierAPI.Models.ReplyModels;
 
 public class LoginReplyModel
 {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace ThirdMessage.ServierAPI.Models.LoginModels;
+namespace ThirdMessage.ServierAPI.Models;
 
 public class LoginModel
 {

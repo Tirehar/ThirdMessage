@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ThirdMessage.ServierAPI.Helper;
 using ThirdMessage.ServierAPI.Models;
+using ThirdMessage.ServierAPI.Models.ReplyModels;
 
 namespace ThirdMessage.ServierAPI.Hubs;
 
