@@ -1,9 +1,12 @@
+using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Hubs;
+using ThirdMessage.ServierAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.WebHost.UseUrls("https://localhost:7034");
+builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
