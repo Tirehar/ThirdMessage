@@ -8,17 +8,44 @@ Window {
     width: 640
     height: 360
     visible: true
-
+    title:"Third Message Login"
     LoginViewModel{
         id:viewModel
     }
 
     RowLayout{
         anchors.fill: parent
-        Rectangle {
+        Item{
             Layout.preferredWidth: parent.width / 2
+            Layout.preferredHeight: parent.height
+            Rectangle{
+                anchors.fill: parent
+                anchors.margins: 24
+                Image {
+                    id:logo
+                    anchors.centerIn: parent
+                    width: Math.min(parent.width * 0.6, 280)
+                    height: width
+                    fillMode: Image.PreserveAspectFit
+                    source: "qrc:/AppLogo.png"
 
+                    opacity: 0.0
+                    scale: 0.96
+                    Behavior on opacity { NumberAnimation { duration: 300} }
+                    Behavior on scale   {
+                        NumberAnimation {
+                            duration: 300
+                            easing.type: Easing.InBack
+                        }
+                    }
+                    Component.onCompleted: {
+                        opacity = 1.0
+                        scale = 1.0
+                    }
+                }
+            }
         }
+
         Column{
             spacing:15
             Label{

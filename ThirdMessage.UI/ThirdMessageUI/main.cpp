@@ -1,10 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
-
+#include <QIcon>
 #include "MessageServices/message_service.h"
 #include "MessageServices/websocket_service.h"
+#include "Models/friend_listmodel.h"
 #include "ViewModels/login_viewmodel.h"
 #include "ViewModels/main_viewmodel.h"
 
@@ -19,7 +19,9 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    
+
+    app.setWindowIcon(QIcon(":/AppLogo.png"));
+
     qmlRegisterType<MainViewModel>("ThirdMessageUI.ViewModels", 1, 0, "MainViewModel");
     qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 

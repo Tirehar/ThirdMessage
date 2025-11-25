@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(ThirdMessageUI VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
@@ -35,6 +36,7 @@ qt_add_qml_module(appThirdMessageUI
         MessageServices/message_service.h MessageServices/message_service.cpp
         Models/friend_listmodel.h Models/friend_listmodel.cpp
         Models/friend_model.h Models/friend_model.cpp
+        RESOURCES Image/image.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -15,7 +15,8 @@ Window {
     minimumWidth:840
     visible: true
     color: "#E9E9E9"
-    title: qsTr("Third Message")
+
+    title: "Third Message"
 
     MainViewModel{
         id: viewModel
