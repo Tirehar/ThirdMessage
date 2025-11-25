@@ -16,6 +16,7 @@ class MainViewModel : public QObject{
 public:
     explicit MainViewModel(QObject *parent = nullptr);
     FriendListModel* getFriendListModel() const;
+    Q_INVOKABLE void loadFriendList();
 
 signals:
     void friendListModelChanged();

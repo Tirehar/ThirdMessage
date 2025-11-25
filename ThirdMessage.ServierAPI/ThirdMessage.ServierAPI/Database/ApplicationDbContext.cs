@@ -10,7 +10,7 @@ public class ApplicationDbContext : DbContext
     {
         var conn = "Server=(localdb)\\mssqllocaldb;Database=ThirdMessageDatabase;Trusted_Connection=True;";
         optionsBuilder.UseSqlServer(conn);
-        optionsBuilder.LogTo(Console.WriteLine);
+       // optionsBuilder.LogTo(Console.WriteLine);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

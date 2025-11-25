@@ -30,7 +30,10 @@ QVariant FriendListModel::data(const QModelIndex &index, int role) const {
 }
 
 void FriendListModel::push_back(const FriendModel &model) {
+    const int row = datas.count();
+    beginInsertRows(QModelIndex(), row, row);
     datas.push_back(model);
+    endInsertRows();
 }
 
 void FriendListModel::remove(int uid) {

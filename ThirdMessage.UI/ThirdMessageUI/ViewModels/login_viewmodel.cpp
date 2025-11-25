@@ -14,15 +14,14 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
     auto model = LoginModel(account, password);
     auto content = JsonHelper::toJsonObject(&model);
     auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Login/Login", content);
-    connect(reply, &QNetworkReply::finished, [reply, account, this]() {
+    connect(reply, &QNetworkReply::finished, [reply, account, this] {
         if (reply->error() == QNetworkReply::NoError) {
             auto bytes = reply->readAll();
             auto jsonDoc = QJsonDocument::fromJson(bytes);
-            auto jsonObj = jsonDoc.object();
-            auto code = jsonObj.value("code").toInt();
+            auto code = jsonDoc["code"].toInt();
             if (code == 0) {
                 loginResponse(true);
-                qDebug() << "Login successful for account:" << account;
+                qDebug() << "Login successful for account:" << account<<";UID:"<<jsonDoc["model"]["uid"].toInt();
             } else {
                 loginResponse(false);
                 qDebug() << "Login failed for account:" << account << "Code:" << code;

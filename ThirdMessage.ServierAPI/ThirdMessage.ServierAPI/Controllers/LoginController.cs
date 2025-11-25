@@ -26,7 +26,13 @@ public class LoginController : ControllerBase
         if (keymodels == null)
         {
             //若不存在则自动注册
-            database.Users.Add(new() { UserName = model.Account, Password = model.Password});
+            var friends = new List<FriendModel>
+            {
+                new FriendModel { Uid = 1, UserName = "System" },
+                new FriendModel { Uid = 2, UserName = "TestUser" }
+            };
+            Console.WriteLine("账户不存在，自动注册新用户:账户" + model.Account );
+            database.Users.Add(new() { UserName = model.Account, Password = model.Password, Friends = friends});
             await database.SaveChangesAsync();
         }
         else

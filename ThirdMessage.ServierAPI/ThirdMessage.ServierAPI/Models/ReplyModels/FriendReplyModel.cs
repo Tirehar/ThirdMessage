@@ -2,6 +2,6 @@
 
 public class FriendReplyModel
 {
-    public int Uid { get; set; }
-    public string UserName { get; set; }
+    public int Count { get; set; }
+    public ICollection<FriendModel> Friends { get; set; }
 }

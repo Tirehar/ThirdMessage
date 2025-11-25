@@ -19,11 +19,11 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
+    
+    qmlRegisterType<MainViewModel>("ThirdMessageUI.ViewModels", 1, 0, "MainViewModel");
+    qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 
-    engine.rootContext()->setContextProperty("mainViewModel", new MainViewModel);
-    engine.rootContext()->setContextProperty("loginViewModel", new LoginVIewModel);
-
-    if (true) {
+    if (false) {
         engine.loadFromModule("ThirdMessageUI", "Main");
     }else {
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");

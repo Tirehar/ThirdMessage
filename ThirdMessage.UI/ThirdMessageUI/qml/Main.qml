@@ -3,6 +3,7 @@ import QtQuick.Controls.Windows
 import QtQuick.Shapes
 // import ThirdMessageUI.WebSocket
 // import ThirdMessageUI.Message
+import ThirdMessageUI.ViewModels
 import QtQuick.Layouts
 import QtQml.Models
 import "./controls"
@@ -16,10 +17,8 @@ Window {
     color: "#E9E9E9"
     title: qsTr("Third Message")
 
-    ListModel{
-        id: friendsListModel
-        ListElement{ userName: "张三" }
-        ListElement{ userName: "李四" }
+    MainViewModel{
+        id: viewModel
     }
 
     RowLayout{
@@ -33,7 +32,7 @@ Window {
             ListView{
                 id: friendsList
                 anchors.fill: parent
-                model: mainViewModel.friendListModel
+                model: viewModel.friendListModel
                 delegate: FriendListItem{
                     onClicked:{
                         if(friendsList.currentIndex !== index || !friendsList.isSelected){
@@ -91,7 +90,7 @@ Window {
                             anchors.fill: parent
                             spacing: 8
 
-                            Item { Layout.fillWidth: true } // 占位，推送按钮到右侧
+                            Item { Layout.fillWidth: true }
 
                             SendButton {
                                 Layout.alignment: Qt.AlignRight

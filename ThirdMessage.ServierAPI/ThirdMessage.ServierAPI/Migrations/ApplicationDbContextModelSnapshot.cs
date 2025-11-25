@@ -21,6 +21,34 @@ namespace ThirdMessage.ServierAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Models.FriendModel", b =>
+                {
+                    b.Property<int>("FriendId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(5)
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FriendId"));
+
+                    b.Property<int>("Uid")
+                        .HasMaxLength(5)
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserModelUid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("FriendId");
+
+                    b.HasIndex("UserModelUid");
+
+                    b.ToTable("Friends", (string)null);
+                });
+
             modelBuilder.Entity("ThirdMessage.ServierAPI.Models.UserModel", b =>
                 {
                     b.Property<int>("Uid")
@@ -43,6 +71,18 @@ namespace ThirdMessage.ServierAPI.Migrations
                     b.HasKey("Uid");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Models.FriendModel", b =>
+                {
+                    b.HasOne("ThirdMessage.ServierAPI.Models.UserModel", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("UserModelUid");
+                });
+
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Models.UserModel", b =>
+                {
+                    b.Navigation("Friends");
                 });
 #pragma warning restore 612, 618
         }

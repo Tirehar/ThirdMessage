@@ -1,12 +1,17 @@
 import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
+import ThirdMessageUI.ViewModels
 
 Window {
     id: loginWindow
     width: 640
     height: 360
     visible: true
+
+    LoginViewModel{
+        id:viewModel
+    }
 
     RowLayout{
         anchors.fill: parent
@@ -43,14 +48,14 @@ Window {
                 width:260
                 height:48
                 onClicked:{
-                    loginViewModel.login(usernameInput.text, passwordInput.text)
+                    viewModel.login(usernameInput.text, passwordInput.text)
                 }
             }
         }
     }
 
     Connections{
-        target: loginViewModel
+        target: viewModel
         function onLoginResponse(successful){
             console.debug("登录回应：" + successful)
             if(successful){
