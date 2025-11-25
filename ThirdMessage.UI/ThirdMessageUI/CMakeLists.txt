@@ -29,6 +29,7 @@ qt_add_qml_module(appThirdMessageUI
         qml/LoginWindow.qml
         qml/controls/SendButton.qml
         qml/controls/FriendListItem.qml
+        qml/controls/MessageListItem.qml
         SOURCES MessageServices/websocket_service.h
         MessageServices/websocket_service.cpp
         ViewModels/main_viewmodel.cpp ViewModels/main_viewmodel.h

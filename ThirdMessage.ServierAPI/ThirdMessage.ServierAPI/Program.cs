@@ -1,3 +1,5 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Hubs;
 using ThirdMessage.ServierAPI.Models;

@@ -11,7 +11,7 @@ using ThirdMessage.ServierAPI.Database;
 namespace ThirdMessage.ServierAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251125042719_InitialCreate")]
+    [Migration("20251125103731_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<MainViewModel>("ThirdMessageUI.ViewModels", 1, 0, "MainViewModel");
     qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 
-    if (false) {
+    if (true) {
         engine.loadFromModule("ThirdMessageUI", "Main");
     }else {
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");
