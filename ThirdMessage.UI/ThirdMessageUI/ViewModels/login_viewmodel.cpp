@@ -2,13 +2,13 @@
 // Created by Tirehar on 2025/11/23.
 //
 
-#include "LoginVIewModel.h"
+#include "login_viewmodel.h"
 
 #include <QNetworkReply>
 
-#include "Helpers/JsonHelper.hpp"
-#include "MessageServices/networkservice.h"
-#include "Models/LoginModel.h"
+#include "Helpers/json_helper.hpp"
+#include "MessageServices/network_service.h"
+#include "Models/login_model.h"
 
 void LoginVIewModel::login(const QString &account, const QString &password) {
     auto model = LoginModel(account, password);
@@ -32,6 +32,5 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
             qDebug() << "Network error during login for account:" << account << "Error:" << reply->errorString();
         }
         reply->deleteLater();
-
     });
 }

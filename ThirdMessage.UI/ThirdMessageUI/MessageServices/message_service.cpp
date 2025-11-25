@@ -2,7 +2,7 @@
 
 #include <QJsonObject>
 
-#include "Helpers/JsonHelper.hpp"
+#include "Helpers/json_helper.hpp"
 
 MessageService::MessageService() {
     webSocket = WebSocketService::getInstance();

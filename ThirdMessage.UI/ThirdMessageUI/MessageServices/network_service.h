@@ -1,5 +1,5 @@
-#ifndef NETWORKSERVICE_H
-#define NETWORKSERVICE_H
+#ifndef NETWORK_SERVICE_H
+#define NETWORK_SERVICE_H
 #include <QQmlApplicationEngine>
 #include <QNetworkAccessManager>
 #include <QJsonObject>
@@ -16,4 +16,4 @@ private:
     NetworkService();
 };
 
-#endif // NETWORKSERVICE_H
+#endif // NETWORK_SERVICE_H

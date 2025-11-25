@@ -1,9 +1,10 @@
 import QtQuick
 import QtQuick.Controls.Windows
 import QtQuick.Shapes
-import ThirdMessageUI.WebSocket
-import ThirdMessageUI.Message
+// import ThirdMessageUI.WebSocket
+// import ThirdMessageUI.Message
 import QtQuick.Layouts
+import QtQml.Models
 import "./controls"
 
 Window {
@@ -15,6 +16,12 @@ Window {
     color: "#E9E9E9"
     title: qsTr("Third Message")
 
+    ListModel{
+        id: friendsListModel
+        ListElement{ userName: "张三" }
+        ListElement{ userName: "李四" }
+    }
+
     RowLayout{
         spacing: 0
         anchors.fill: parent
@@ -25,6 +32,20 @@ Window {
             Layout.fillHeight: true
             ListView{
                 id: friendsList
+                anchors.fill: parent
+                model: mainViewModel.friendListModel
+                delegate: FriendListItem{
+                    onClicked:{
+                        if(friendsList.currentIndex !== index || !friendsList.isSelected){
+                            friendsList.currentItem.setSelected(false)
+                            friendsList.currentIndex = index
+                            friendsList.currentItem.setSelected(true)
+                            friendsList.isSelected = true
+                        }
+
+                    }
+                }
+                property bool isSelected: false
             }
         }
 
@@ -77,7 +98,7 @@ Window {
                                 Layout.rightMargin: 10;
                                 Layout.bottomMargin: 20;
                                 onClicked: {
-                                    MessageService.sendMessage(messageText.text)
+                                    //MessageService.sendMessage(messageText.text)
                                     //WebSocketService.sendMessage(messageText.text);
                                 }
                             }
@@ -88,11 +109,11 @@ Window {
         }
     }
 
-    Connections{
-        target: WebSocketService
-        function onResponse(response) {
-            messageText.text = ""
-            console.log("服务器发出回应" + response)
-        }
-    }
+    // Connections{
+    //     target: WebSocketService
+    //     function onResponse(response) {
+    //         messageText.text = ""
+    //         console.log("服务器发出回应" + response)
+    //     }
+    // }
 }

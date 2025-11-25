@@ -1,7 +1,7 @@
 //
 // Created by Tirehar on 2025/11/23.
 //
-#include "LoginModel.h"
+#include "login_model.h"
 
 
 LoginModel::LoginModel(const QString &account, const QString &password) {

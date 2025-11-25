@@ -1,4 +1,4 @@
-#include "networkservice.h"
+#include "network_service.h"
 
 NetworkService::NetworkService() {
     manager = QSharedPointer<QNetworkAccessManager>(new QNetworkAccessManager());

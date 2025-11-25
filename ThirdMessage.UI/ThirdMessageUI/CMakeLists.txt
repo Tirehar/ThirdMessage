@@ -14,23 +14,27 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appThirdMessageUI
     main.cpp
-        ViewModels/LoginVIewModel.cpp
-        ViewModels/LoginVIewModel.h
-        Helpers/JsonHelper.hpp
-        Models/LoginModel.cpp
-        Models/LoginModel.h
+    ViewModels/login_viewmodel.cpp
+    ViewModels/login_viewmodel.h
+    Helpers/json_helper.hpp
+        Models/login_model.cpp
+        Models/login_model.h
 )
 
 qt_add_qml_module(appThirdMessageUI
     URI ThirdMessageUI
     QML_FILES
         qml/Main.qml
+        qml/LoginWindow.qml
         qml/controls/SendButton.qml
-        SOURCES MessageServices/websocket_service.h MessageServices/websocket_service.cpp
-        SOURCES ViewModels/MainViewModel.cpp ViewModels/MainViewModel.h
-        QML_FILES qml/LoginWindow.qml
-        SOURCES MessageServices/networkservice.h MessageServices/networkservice.cpp
-        SOURCES MessageServices/message_service.h MessageServices/message_service.cpp
+        qml/controls/FriendListItem.qml
+        SOURCES MessageServices/websocket_service.h
+        MessageServices/websocket_service.cpp
+        ViewModels/main_viewmodel.cpp ViewModels/main_viewmodel.h
+        MessageServices/network_service.h MessageServices/network_service.cpp
+        MessageServices/message_service.h MessageServices/message_service.cpp
+        Models/friend_listmodel.h Models/friend_listmodel.cpp
+        Models/friend_model.h Models/friend_model.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -5,8 +5,8 @@
 
 #include "MessageServices/message_service.h"
 #include "MessageServices/websocket_service.h"
-#include "ViewModels/LoginVIewModel.h"
-#include "ViewModels/MainViewModel.h"
+#include "ViewModels/login_viewmodel.h"
+#include "ViewModels/main_viewmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,11 +20,10 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
-
     engine.rootContext()->setContextProperty("mainViewModel", new MainViewModel);
     engine.rootContext()->setContextProperty("loginViewModel", new LoginVIewModel);
 
-    if (false) {
+    if (true) {
         engine.loadFromModule("ThirdMessageUI", "Main");
     }else {
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");
@@ -35,6 +34,7 @@ int main(int argc, char *argv[])
     auto socketService = WebSocketService::getInstance();
     socketService->initialize(QUrl("ws://localhost:8080"));
     socketService->connectServer();
+
 
     qmlRegisterSingletonType<WebSocketService>("ThirdMessageUI.WebSocket", 1, 0, "WebSocketService", [](QQmlEngine *qmlEngine, QJSEngine *jsEngine) -> QObject* {
         return WebSocketService::getInstance();
