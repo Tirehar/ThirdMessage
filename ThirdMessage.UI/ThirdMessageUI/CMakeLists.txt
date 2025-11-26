@@ -10,16 +10,16 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS WebSockets)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appThirdMessageUI
     main.cpp
-    ViewModels/login_viewmodel.cpp
-    ViewModels/login_viewmodel.h
     Helpers/json_helper.hpp
-        Models/login_model.cpp
-        Models/login_model.h
+    Models/login_model.h Models/login_model.cpp
+    Models/friend_model.h Models/friend_model.cpp
+    Models/message_model.h Models/message_model.cpp
 )
 
 qt_add_qml_module(appThirdMessageUI
@@ -30,14 +30,17 @@ qt_add_qml_module(appThirdMessageUI
         qml/controls/SendButton.qml
         qml/controls/FriendListItem.qml
         qml/controls/MessageListItem.qml
-        SOURCES MessageServices/websocket_service.h
+        SOURCES
+        MessageServices/websocket_service.h
         MessageServices/websocket_service.cpp
         ViewModels/main_viewmodel.cpp ViewModels/main_viewmodel.h
+        ViewModels/login_viewmodel.cpp ViewModels/login_viewmodel.h
         MessageServices/network_service.h MessageServices/network_service.cpp
         MessageServices/message_service.h MessageServices/message_service.cpp
         Models/friend_listmodel.h Models/friend_listmodel.cpp
-        Models/friend_model.h Models/friend_model.cpp
-        RESOURCES Image/image.qrc
+        Models/message_listmodel.h Models/message_listmodel.cpp
+        RESOURCES
+        Image/image.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -56,6 +59,7 @@ target_link_libraries(appThirdMessageUI
 )
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::WebSockets)
+target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 

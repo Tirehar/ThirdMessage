@@ -5,18 +5,18 @@ Item {
     id: root
     width: Math.min(maxWidth, messageText.implicitWidth)
     height: Math.min(maxHeight, messageText.implicitHeight)
-    anchors.right: isMyMessage ? parent.right : undefined
-    anchors.left: !isMyMessage ? parent.left : undefined
+    anchors.right: isMy ? parent.right : undefined
+    anchors.left: !isMy ? parent.left : undefined
     anchors.margins: 10
 
     property color myMessageColor: "#c6e7f8"
-    property color otherMessageColor: "#c3c2c2"
+    property color otherMessageColor: "#efefef"
     property real maxWidth: 260
     property real maxHeight: 200
 
     Rectangle{
         anchors.fill: parent
-        color: isMyMessage ? myMessageColor : otherMessageColor
+        color: isMy ? myMessageColor : otherMessageColor
         radius: 6
         Text{
             id: messageText

@@ -71,12 +71,11 @@ Window {
                 ListView {
                     id: messageList
                     anchors.fill: parent
-                    model: messageListModel
+                    model: viewModel.messageListModel
                     spacing: 10
                     clip: true
                     ScrollBar.vertical: ScrollBar {
                         width:5
-                        policy: ScrollBar.Auto
                         contentItem: Rectangle { color: "#989898"; radius: 2 }
                     }
                     header: Item {
@@ -121,10 +120,6 @@ Window {
                                     return
                                 //MessageService.sendMessage(messageText.text)
                                 //WebSocketService.sendMessage(messageText.text);
-                                messageListModel.append({
-                                    isMyMessage: true,
-                                    content: messageText.text
-                                });
                                 messageText.clear()
                             }
                         }
@@ -146,7 +141,7 @@ Window {
                                 Layout.rightMargin: 10;
                                 Layout.bottomMargin: 20;
                                 onClicked: {
-                                    sendMessage()
+                                    messageText.sendMessage()
                                 }
                             }
                         }

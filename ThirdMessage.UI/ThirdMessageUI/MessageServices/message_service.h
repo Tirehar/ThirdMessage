@@ -1,8 +1,6 @@
 #ifndef MESSAGE_SERVICE_H
 #define MESSAGE_SERVICE_H
 
-#include <QObject>
-
 #include "websocket_service.h"
 
 class MessageService : public QObject

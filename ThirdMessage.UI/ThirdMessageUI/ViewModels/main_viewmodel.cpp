@@ -12,11 +12,18 @@
 
 MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
     friendListModel = new FriendListModel(this);
+    messageListModel = new MessageListModel(this);
     loadFriendList();
+    messageListModel->push_back(MessageModel(1, false, "Hello World", 11111));
+    messageListModel->push_back(MessageModel(1, true, "Hello World", 11112));
 }
 
 FriendListModel* MainViewModel::getFriendListModel() const{
     return friendListModel;
+}
+
+MessageListModel* MainViewModel::getMessageListModel() const {
+    return messageListModel;
 }
 
 void MainViewModel::loadFriendList() {
