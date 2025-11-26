@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
+using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Models;
 using ThirdMessage.ServierAPI.Models.ReplyModels;
 
@@ -11,34 +15,30 @@ namespace ThirdMessage.ServierAPI.Controllers;
 public class LoginController : ControllerBase
 {
     private readonly ApplicationDbContext database;
+    private readonly UserManager<UserEntity> userManager;
 
-    public LoginController(ApplicationDbContext dbContext)
+    public LoginController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager)
     {
         this.database = dbContext;
-        
+        this.userManager = userManager;
     }
 
     [HttpPost]
     public async Task<ReplyModel<LoginReplyModel>> Login([FromBody] LoginModel model)
     {
         Console.WriteLine("收到登录请求:账户" + model.Account );
-        var keymodels = database.Users.FirstOrDefault(m => m.UserName == model.Account);
-        if (keymodels == null)
+        var user = await userManager.FindByNameAsync(model.Account);
+        
+        if (user == null)
         {
             //若不存在则自动注册
-            var friends = new List<FriendModel>
-            {
-                new FriendModel { Uid = 1, UserName = "System" },
-                new FriendModel { Uid = 2, UserName = "TestUser" }
-            };
-            Console.WriteLine("账户不存在，自动注册新用户:账户" + model.Account );
-            database.Users.Add(new() { UserName = model.Account, Password = model.Password, Friends = friends});
-            await database.SaveChangesAsync();
+            Console.WriteLine("用户不存在，自动注册");
+            user = await CreateUser(model);
         }
         else
-        {
+        { 
             //判断密码是否正确
-            if(keymodels.Password != model.Password)
+            if(!await userManager.CheckPasswordAsync(user, model.Password))
             {
                 return new ReplyModel<LoginReplyModel>
                 {
@@ -47,11 +47,17 @@ public class LoginController : ControllerBase
                     Model = new LoginReplyModel
                     {
                         IsSuccess = false,
-                        Uid = -1
+                        Uid = "null"
                     }
                 };
             }
         }
+
+        var identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
+        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName!));
+        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+        
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new(identity));
         return new ReplyModel<LoginReplyModel>
         {
             Code = 0,
@@ -59,14 +65,16 @@ public class LoginController : ControllerBase
             Model = new LoginReplyModel
             {
                 IsSuccess = true,
-                Uid = database.Users.FirstOrDefault(m => m.UserName == model.Account)!.Uid
+                Uid = user.Id
             }
         };
     }
 
     [HttpPost]
-    public ReplyModel<LoginReplyModel> Register([FromBody] LoginModel model)
+    public async Task<ReplyModel<LoginReplyModel>> Register([FromBody] LoginModel model)
     {
+        var user = await CreateUser(model);
+
         return new ReplyModel<LoginReplyModel>
         {
             Code = 0,
@@ -74,8 +82,27 @@ public class LoginController : ControllerBase
             Model = new LoginReplyModel
             {
                 IsSuccess = true,
-                Uid = 00001
+                Uid = user.Id
             }
         };
+    }
+
+    private async Task<UserEntity> CreateUser(LoginModel model)
+    {
+        var friends = new List<FriendEntityl>
+            {
+                new FriendEntityl { Uid = "8b6f56c6-537d-4cf3-ba91-d0b6a8f80589",UserName = "System" },
+                new FriendEntityl { Uid = "8b6f56c6-537d-4cf3-ba91-d0b6a8f80589", UserName = "TestUser" }
+            };
+        var user = new UserEntity() { UserName = model.Account, Friends = friends };
+        var result = await userManager.CreateAsync(user, model.Password);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine(error.Description);
+            }
+        }
+        return user;
     }
 }

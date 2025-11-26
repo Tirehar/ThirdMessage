@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
+using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Models.ReplyModels;
 
 namespace ThirdMessage.ServierAPI.Controllers;
@@ -10,16 +13,21 @@ namespace ThirdMessage.ServierAPI.Controllers;
 public class FriendController : ControllerBase
 {
     private readonly ApplicationDbContext database;
-    public FriendController(ApplicationDbContext dbContext)
+    private readonly UserManager<UserEntity> userManager;
+    public FriendController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager)
     {
+        this.userManager = userManager;
         this.database = dbContext;
     }
     [HttpGet]
-    public ReplyModel<FriendReplyModel> GetFriends(int uid)
+    public async Task<ReplyModel<FriendReplyModel>> GetFriends(string uid)
     {
-        var user = database.Users.Include(u => u.Friends).FirstOrDefault(u => u.Uid == uid);
+        Console.WriteLine($"GetFriends called with uid: {uid}");
+        var user = await userManager.FindByIdAsync(uid);
+        Console.WriteLine($"User found: {user != null}");
         if (user != null)
         {
+            await database.Entry(user).Collection(u => u.Friends).LoadAsync();
             return new ReplyModel<FriendReplyModel>
             {
                 Code = 0,

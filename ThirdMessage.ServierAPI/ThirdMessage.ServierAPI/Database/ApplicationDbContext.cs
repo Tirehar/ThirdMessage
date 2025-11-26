@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ThirdMessage.ServierAPI.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using ThirdMessage.ServierAPI.Database.Entitys;
 
 namespace ThirdMessage.ServierAPI.Database;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<UserEntity>
 {
-    public DbSet<UserModel> Users { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var conn = "Server=(localdb)\\mssqllocaldb;Database=ThirdMessageDatabase;Trusted_Connection=True;";
@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }
