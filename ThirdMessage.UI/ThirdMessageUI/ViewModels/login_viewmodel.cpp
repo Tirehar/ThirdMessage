@@ -5,6 +5,7 @@
 #include "login_viewmodel.h"
 
 #include <QNetworkReply>
+#include <QSettings>
 
 #include "main_viewmodel.h"
 #include "Helpers/json_helper.hpp"
@@ -22,6 +23,7 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
             auto code = jsonDoc["code"].toInt();
             if (code == 0) {
                 auto uid = jsonDoc["model"]["uid"].toString();
+                saveData(uid);
                 loginResponse(true);
                 qDebug() << "Login successful for account:" << account<<";UID:"<<uid;
             } else {
@@ -34,4 +36,10 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
         }
         reply->deleteLater();
     });
+}
+
+void LoginVIewModel::saveData(const QString& uid) {
+    QSettings settings("Tirehar", "ThirdMessage");
+    settings.setValue("UID", uid);
+    settings.sync();
 }

@@ -6,16 +6,24 @@
 
 #include <QNetworkReply>
 #include <QJsonArray>
+#include <QSettings>
 
 #include "MessageServices/network_service.h"
-
 
 MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
     friendListModel = new FriendListModel(this);
     messageListModel = new MessageListModel(this);
+    QSettings settings("Tirehar", "ThirdMessage");
+    uid = settings.value("UID").toString();
     loadFriendList();
     messageListModel->push_back(MessageModel(1, false, "Hello World", 11111));
     messageListModel->push_back(MessageModel(1, true, "Hello World", 11112));
+}
+
+MainViewModel::~MainViewModel() {
+    deleteLater();
+    delete friendListModel;
+    delete messageListModel;
 }
 
 FriendListModel* MainViewModel::getFriendListModel() const{
@@ -28,7 +36,7 @@ MessageListModel* MainViewModel::getMessageListModel() const {
 
 void MainViewModel::loadFriendList() {
     qDebug()<<"Load FriendListItem";
-    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/GetFriends?uid=4fa0850b-cf18-4e3d-bd5a-47330900d621");
+    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/GetFriends?uid="+uid);
     connect(reply, &QNetworkReply::finished,[reply, this] {
         auto bytes = reply->readAll();
         auto jsonDoc = QJsonDocument::fromJson(bytes);

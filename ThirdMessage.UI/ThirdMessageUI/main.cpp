@@ -2,12 +2,13 @@
 #include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
 #include <QIcon>
+#include <QSettings>
+
 #include "MessageServices/message_service.h"
 #include "MessageServices/websocket_service.h"
 #include "Models/friend_listmodel.h"
 #include "ViewModels/login_viewmodel.h"
 #include "ViewModels/main_viewmodel.h"
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -25,13 +26,12 @@ int main(int argc, char *argv[])
     qmlRegisterType<MainViewModel>("ThirdMessageUI.ViewModels", 1, 0, "MainViewModel");
     qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 
-    if (false) {
+    QSettings settings("Tirehar", "ThirdMessage");
+    if (settings.contains("UID")) {
         engine.loadFromModule("ThirdMessageUI", "Main");
     }else {
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");
     }
-
-
 
     auto socketService = WebSocketService::getInstance();
     socketService->initialize(QUrl("ws://localhost:8080"));
@@ -44,8 +44,6 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<WebSocketService>("ThirdMessageUI.Message", 1, 0, "MessageService", [](QQmlEngine *qmlEngine, QJSEngine *jsEngine) -> QObject* {
         return MessageService::getInstance();
     });
-
-
 
     return app.exec();
 }

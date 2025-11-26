@@ -12,6 +12,7 @@ class MainViewModel : public QObject{
 
 public:
     explicit MainViewModel(QObject *parent = nullptr);
+    ~MainViewModel() override;
     FriendListModel* getFriendListModel() const;
     MessageListModel* getMessageListModel() const;
     Q_INVOKABLE void loadFriendList();
@@ -22,6 +23,7 @@ signals:
 private:
     FriendListModel* friendListModel;
     MessageListModel* messageListModel;
+    QString uid;
 };
 
 

@@ -13,6 +13,8 @@ public:
     Q_INVOKABLE void login(const QString& account,const QString& password);
     signals:
         Q_SIGNAL void loginResponse(bool successful);
+private:
+    void saveData(const QString& uid);
 };
 
 
