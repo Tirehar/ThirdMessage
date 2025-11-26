@@ -6,6 +6,7 @@
 
 #include <QNetworkReply>
 
+#include "main_viewmodel.h"
 #include "Helpers/json_helper.hpp"
 #include "MessageServices/network_service.h"
 #include "Models/login_model.h"
@@ -20,8 +21,9 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
             auto jsonDoc = QJsonDocument::fromJson(bytes);
             auto code = jsonDoc["code"].toInt();
             if (code == 0) {
+                auto uid = jsonDoc["model"]["uid"].toString();
                 loginResponse(true);
-                qDebug() << "Login successful for account:" << account<<";UID:"<<jsonDoc["model"]["uid"].toInt();
+                qDebug() << "Login successful for account:" << account<<";UID:"<<uid;
             } else {
                 loginResponse(false);
                 qDebug() << "Login failed for account:" << account << "Code:" << code;

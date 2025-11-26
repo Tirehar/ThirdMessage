@@ -1,3 +1,3 @@
 #include "friend_model.h"
 
-FriendModel::FriendModel(int uid, const QString& userName): uid(uid), userName(userName){}
+FriendModel::FriendModel(const QString& uid, const QString& userName): uid(uid), userName(userName){}

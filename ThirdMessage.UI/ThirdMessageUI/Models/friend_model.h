@@ -5,8 +5,8 @@
 class FriendModel
 {
 public:
-    FriendModel(int uid, const QString& userName);
-    int uid;
+    FriendModel(const QString& uid, const QString& userName);
+    QString uid;
     QString userName;
 };
 

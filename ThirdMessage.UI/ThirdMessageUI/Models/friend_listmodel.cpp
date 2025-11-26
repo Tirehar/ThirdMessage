@@ -36,7 +36,7 @@ void FriendListModel::push_back(const FriendModel &model) {
     endInsertRows();
 }
 
-void FriendListModel::remove(int uid) {
+void FriendListModel::remove(const QString& uid) {
     datas.removeIf([uid](const FriendModel& model){
         return model.uid == uid;
     });

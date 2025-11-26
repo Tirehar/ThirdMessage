@@ -14,7 +14,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role) const override;
     void push_back(const FriendModel& model);
-    void remove(int uid);
+    void remove(const QString& uid);
 private:
     QList<FriendModel> datas;
 };

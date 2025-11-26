@@ -15,7 +15,6 @@ public:
     FriendListModel* getFriendListModel() const;
     MessageListModel* getMessageListModel() const;
     Q_INVOKABLE void loadFriendList();
-
 signals:
     void friendListModelChanged();
     void messageListModelChanged();
