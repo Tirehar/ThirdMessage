@@ -12,6 +12,7 @@ Rectangle {
     property bool isSelected
 
     signal clicked()
+    signal selected()
 
     Text{
         anchors.fill: parent
@@ -72,9 +73,10 @@ Rectangle {
         }
     }
 
-    function setSelected(selected){
-        root.isSelected = selected
-        if(isSelected){
+    function setSelected(isSelect){
+        root.isSelected = isSelect
+        if(isSelect){
+            selected(uid);
             root.state = "selected"
         } else {
             root.state = "normal"

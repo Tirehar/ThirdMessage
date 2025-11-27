@@ -155,7 +155,7 @@ namespace ThirdMessage.ServierAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.FriendEntityl", b =>
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.FriendEntity", b =>
                 {
                     b.Property<int>("FriendId")
                         .ValueGeneratedOnAdd()
@@ -182,6 +182,39 @@ namespace ThirdMessage.ServierAPI.Migrations
                     b.HasIndex("UserEntityId");
 
                     b.ToTable("Friends", (string)null);
+                });
+
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.MessageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FriendEntityFriendId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FromUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ToUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FriendEntityFriendId");
+
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.UserEntity", b =>
@@ -300,11 +333,23 @@ namespace ThirdMessage.ServierAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.FriendEntityl", b =>
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.FriendEntity", b =>
                 {
                     b.HasOne("ThirdMessage.ServierAPI.Database.Entitys.UserEntity", null)
                         .WithMany("Friends")
                         .HasForeignKey("UserEntityId");
+                });
+
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.MessageEntity", b =>
+                {
+                    b.HasOne("ThirdMessage.ServierAPI.Database.Entitys.FriendEntity", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("FriendEntityFriendId");
+                });
+
+            modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.FriendEntity", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("ThirdMessage.ServierAPI.Database.Entitys.UserEntity", b =>

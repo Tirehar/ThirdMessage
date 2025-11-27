@@ -14,6 +14,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role) const override;
     void push_back(const MessageModel& data);
+    void clear();
 private:
     QList<MessageModel> datas;
 };

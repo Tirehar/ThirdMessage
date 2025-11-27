@@ -2,4 +2,4 @@
 
 #include <utility>
 
-MessageModel::MessageModel(int otherId, bool isMy, QString content, int time) : otherId(otherId), isMy(isMy), content(std::move(content)), time(time) {}
+MessageModel::MessageModel(QString otherId, bool isMy, QString content, int time) : otherId(std::move(otherId)), isMy(isMy), content(std::move(content)), time(time) {}

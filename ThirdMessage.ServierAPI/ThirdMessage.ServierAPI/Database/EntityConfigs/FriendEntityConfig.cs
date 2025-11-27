@@ -4,9 +4,9 @@ using ThirdMessage.ServierAPI.Database.Entitys;
 
 namespace ThirdMessage.ServierAPI.Database.EntityConfigs;
 
-public class FriendEntityConfig : IEntityTypeConfiguration<FriendEntityl>
+public class FriendEntityConfig : IEntityTypeConfiguration<FriendEntity>
 {
-    public void Configure(EntityTypeBuilder<FriendEntityl> builder)
+    public void Configure(EntityTypeBuilder<FriendEntity> builder)
     {
         builder.ToTable("Friends");
         builder.HasKey(f => f.FriendId);

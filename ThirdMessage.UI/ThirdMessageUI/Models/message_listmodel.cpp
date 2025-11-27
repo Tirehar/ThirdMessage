@@ -43,4 +43,11 @@ void MessageListModel::push_back(const MessageModel &data) {
     endInsertRows();
 }
 
+void MessageListModel::clear() {
+    const int row = datas.count();
+    beginRemoveRows(QModelIndex(), 0, row - 1);
+    datas.clear();
+    endRemoveRows();
+}
+
 

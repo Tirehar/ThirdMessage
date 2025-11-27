@@ -5,8 +5,8 @@
 class MessageModel
 {
 public:
-    MessageModel(int otherId, bool isMy, QString content, int time);
-    int otherId;
+    MessageModel(QString otherId, bool isMy, QString content, int time);
+    QString otherId;
     bool isMy;
     QString content;
     int time;

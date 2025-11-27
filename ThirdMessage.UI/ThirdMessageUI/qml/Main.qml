@@ -42,7 +42,9 @@ Window {
                             friendsList.currentItem.setSelected(true)
                             friendsList.isSelected = true
                         }
-
+                    }
+                    onSelected:{
+                        viewModel.loadMessageList(uid)
                     }
                 }
                 property bool isSelected: false
@@ -56,18 +58,6 @@ Window {
                 color: "#CBCFCF"
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-
-                ListModel {
-                    id: messageListModel
-                    ListElement {
-                        isMyMessage: true
-                        content: "你好！"
-                    }
-                    ListElement {
-                        isMyMessage: false
-                        content: "你好！很高兴认识你。"
-                    }
-                }
                 ListView {
                     id: messageList
                     anchors.fill: parent

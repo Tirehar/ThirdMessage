@@ -16,6 +16,8 @@ public:
     FriendListModel* getFriendListModel() const;
     MessageListModel* getMessageListModel() const;
     Q_INVOKABLE void loadFriendList();
+public slots:
+    void loadMessageList(QString otherUid);
 signals:
     void friendListModelChanged();
     void messageListModelChanged();
