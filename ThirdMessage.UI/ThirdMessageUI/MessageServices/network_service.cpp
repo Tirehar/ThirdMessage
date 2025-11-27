@@ -1,5 +1,8 @@
 #include "network_service.h"
 
+#include <QNetworkCookieJar>
+#include <QSettings>
+
 NetworkService::NetworkService() {
     manager = QSharedPointer<QNetworkAccessManager>(new QNetworkAccessManager());
 }
@@ -11,6 +14,7 @@ NetworkService* NetworkService::getInstance() {
 
 QNetworkReply* NetworkService::sendGetRequest(const QString &url, const QJsonObject &json) {
     auto request = QNetworkRequest(QUrl(url));
+    request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
         auto jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
@@ -22,6 +26,7 @@ QNetworkReply* NetworkService::sendGetRequest(const QString &url, const QJsonObj
 
 QNetworkReply* NetworkService::sendPostRequest(const QString &url, const QJsonObject &json) {
     auto request = QNetworkRequest(QUrl(url));
+    request.setHeader(QNetworkRequest::CookieHeader,  QVariant::fromValue(cookies));
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
         auto jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
@@ -29,5 +34,26 @@ QNetworkReply* NetworkService::sendPostRequest(const QString &url, const QJsonOb
         return manager->post(request, jsonData);
     }
     return manager->post(request, nullptr);
+}
+
+void NetworkService::setCookie(const QList<QNetworkCookie> &cookies) {
+    this->cookies = cookies;
+}
+
+void NetworkService::requestCookie() {
+    auto cookieJar = manager->cookieJar();
+    QUrl cookieUrl("https://localhost:7034");
+    auto cookies = cookieJar->cookiesForUrl(cookieUrl);
+    saveCookie(cookies);
+}
+
+void NetworkService::saveCookie(const QList<QNetworkCookie> &cookies) {
+    QSettings settings("Tirehar", "ThirdMessage");
+    QByteArray cookieData;
+    for (const QNetworkCookie &cookie : cookies) {
+        cookieData.append(cookie.toRawForm());
+    }
+    settings.setValue("Cookie", cookieData);
+    settings.sync();
 }
 

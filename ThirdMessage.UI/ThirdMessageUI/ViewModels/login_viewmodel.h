@@ -4,8 +4,10 @@
 
 #ifndef THIRDMESSAGEUI_LOGINVIEWMODEL_H
 #define THIRDMESSAGEUI_LOGINVIEWMODEL_H
+#include <QNetworkCookie>
+#include <QList>
+#include <QVariant>
 #include <QObject>
-
 
 class LoginVIewModel : public QObject{
     Q_OBJECT

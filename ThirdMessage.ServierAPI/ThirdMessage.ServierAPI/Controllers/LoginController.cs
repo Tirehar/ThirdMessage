@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Models;

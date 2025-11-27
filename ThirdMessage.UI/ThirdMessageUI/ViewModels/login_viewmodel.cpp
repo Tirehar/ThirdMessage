@@ -24,6 +24,7 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
             if (code == 0) {
                 auto uid = jsonDoc["model"]["uid"].toString();
                 saveData(uid);
+                NetworkService::getInstance()->requestCookie();
                 loginResponse(true);
                 qDebug() << "Login successful for account:" << account<<";UID:"<<uid;
             } else {

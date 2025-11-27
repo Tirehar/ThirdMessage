@@ -2,6 +2,7 @@
 #define NETWORK_SERVICE_H
 #include <QQmlApplicationEngine>
 #include <QNetworkAccessManager>
+#include <QNetworkCookie>
 #include <QJsonObject>
 
 class NetworkService : public QObject
@@ -10,9 +11,13 @@ class NetworkService : public QObject
 public:
     QNetworkReply* sendGetRequest(const QString &url, const QJsonObject &json = QJsonObject());
     QNetworkReply* sendPostRequest(const QString &url, const QJsonObject &json = QJsonObject());
+    void setCookie(const QList<QNetworkCookie> &cookies);
+    void requestCookie();
+    void saveCookie(const QList<QNetworkCookie> &cookies);
     static NetworkService* getInstance();
 private:
     QSharedPointer<QNetworkAccessManager> manager;
+    QList<QNetworkCookie> cookies;
     NetworkService();
 };
 

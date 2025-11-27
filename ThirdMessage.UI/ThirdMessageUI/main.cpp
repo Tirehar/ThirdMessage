@@ -5,6 +5,7 @@
 #include <QSettings>
 
 #include "MessageServices/message_service.h"
+#include "MessageServices/network_service.h"
 #include "MessageServices/websocket_service.h"
 #include "Models/friend_listmodel.h"
 #include "ViewModels/login_viewmodel.h"
@@ -28,6 +29,9 @@ int main(int argc, char *argv[])
 
     QSettings settings("Tirehar", "ThirdMessage");
     if (settings.contains("UID")) {
+        auto cookieData = settings.value("Cookie").toByteArray();
+        auto cookies = QNetworkCookie::parseCookies(cookieData);
+        NetworkService::getInstance()->setCookie(cookies);
         engine.loadFromModule("ThirdMessageUI", "Main");
     }else {
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");
