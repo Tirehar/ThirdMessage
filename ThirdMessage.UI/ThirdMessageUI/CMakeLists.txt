@@ -30,6 +30,7 @@ qt_add_qml_module(appThirdMessageUI
         qml/controls/SendButton.qml
         qml/controls/FriendListItem.qml
         qml/controls/MessageListItem.qml
+        qml/controls/FriendSearchEdit.qml
         SOURCES
         MessageServices/websocket_service.h
         MessageServices/websocket_service.cpp
@@ -59,9 +60,6 @@ target_link_libraries(appThirdMessageUI
 )
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::WebSockets)
-target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
-target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
-target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 
 include(GNUInstallDirs)
 install(TARGETS appThirdMessageUI

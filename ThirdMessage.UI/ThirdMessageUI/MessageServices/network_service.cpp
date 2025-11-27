@@ -18,7 +18,6 @@ QNetworkReply* NetworkService::sendGetRequest(const QString &url, const QJsonObj
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
         auto jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
-        qDebug()<<json;
         return manager->get(request, jsonData);
     }
     return manager->get(request);
@@ -30,10 +29,9 @@ QNetworkReply* NetworkService::sendPostRequest(const QString &url, const QJsonOb
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
         auto jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
-        qDebug()<<json;
         return manager->post(request, jsonData);
     }
-    return manager->post(request, nullptr);
+    return manager->post(request, QByteArray());
 }
 
 void NetworkService::setCookie(const QList<QNetworkCookie> &cookies) {

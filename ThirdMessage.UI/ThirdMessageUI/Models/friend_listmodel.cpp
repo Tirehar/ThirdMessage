@@ -41,3 +41,17 @@ void FriendListModel::remove(const QString& uid) {
         return model.uid == uid;
     });
 }
+
+void FriendListModel::clear() {
+    const int row = datas.count();
+    beginRemoveRows(QModelIndex(), 0, row - 1);
+    datas.clear();
+    endRemoveRows();
+}
+
+void FriendListModel::Refresh(const QList<FriendModel> & models) {
+    datas.clear();
+    beginInsertRows(QModelIndex(), 0, 0);
+    datas = models;
+    endInsertRows();
+}

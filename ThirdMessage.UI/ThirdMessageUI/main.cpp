@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 
     QSettings settings("Tirehar", "ThirdMessage");
-    settings.clear();
+    //settings.clear();
     if (settings.contains("UID")) {
         auto cookieData = settings.value("Cookie").toByteArray();
         auto cookies = QNetworkCookie::parseCookies(cookieData);

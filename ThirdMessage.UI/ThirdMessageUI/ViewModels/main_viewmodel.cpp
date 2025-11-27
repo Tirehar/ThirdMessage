@@ -39,7 +39,21 @@ void MainViewModel::loadFriendList() {
         auto jsonDoc = QJsonDocument::fromJson(bytes);
         for (auto friendModel: jsonDoc["model"]["friends"].toArray()) {
             QJsonObject obj = friendModel.toObject();
+            qDebug()<<"Get"<<obj["userName"].toString();
             friendListModel->push_back(FriendModel(obj["uid"].toString(), obj["userName"].toString()));
+        }
+    });
+}
+
+void MainViewModel::friendAdd(const QString &uid) {
+    auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Friend/FriendRequest?otheruid=" + uid);
+    connect(reply, &QNetworkReply::finished,[reply, this] {
+        qDebug()<<"Error:"<<reply->error();
+        auto bytes = reply->readAll();
+        auto jsonDoc = QJsonDocument::fromJson(bytes);
+        if (jsonDoc["code"].toInt() == 0) {
+            messageListModel->clear();
+            loadFriendList();
         }
     });
 }

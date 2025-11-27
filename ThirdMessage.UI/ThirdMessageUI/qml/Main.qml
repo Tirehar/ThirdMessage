@@ -7,7 +7,6 @@ import ThirdMessageUI.ViewModels
 import QtQuick.Layouts
 import QtQml.Models
 import "./controls"
-
 Window {
     width: 1080
     height: 680
@@ -30,24 +29,44 @@ Window {
             color: "#E9E9E9"
             width: 280
             Layout.fillHeight: true
-            ListView {
-                id: friendsList
+            ColumnLayout {
                 anchors.fill: parent
-                model: viewModel.friendListModel
-                delegate: FriendListItem {
-                    onClicked: {
-                        if (friendsList.currentIndex !== index || !friendsList.isSelected) {
-                            friendsList.currentItem.setSelected(false)
-                            friendsList.currentIndex = index
-                            friendsList.currentItem.setSelected(true)
-                            friendsList.isSelected = true
+                spacing: 0
+                Rectangle {
+                    id: topBar
+                    color: "#bcc4cc"
+                    z:2
+                    Layout.preferredHeight: 36
+                    Layout.fillWidth: true
+
+                    FriendSearchEdit{
+                         anchors.fill: parent
+                        onActived: {
+                            viewModel.friendAdd(text);
                         }
                     }
-                    onSelected:{
-                        viewModel.loadMessageList(uid)
-                    }
                 }
-                property bool isSelected: false
+
+                ListView {
+                    id: friendsList
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    model: viewModel.friendListModel
+                    delegate: FriendListItem {
+                        onClicked: {
+                            if (friendsList.currentIndex !== index || !friendsList.isSelected) {
+                                if (friendsList.currentItem) friendsList.currentItem.setSelected(false)
+                                friendsList.currentIndex = index
+                                if (friendsList.currentItem) friendsList.currentItem.setSelected(true)
+                                friendsList.isSelected = true
+                            }
+                        }
+                        onSelected: {
+                            viewModel.loadMessageList(uid)
+                        }
+                    }
+                    property bool isSelected: false
+                }
             }
         }
 

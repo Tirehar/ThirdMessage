@@ -4,5 +4,5 @@ namespace ThirdMessage.ServierAPI.Database.Entitys;
 
 public class UserEntity : IdentityUser
 {
-    public ICollection<FriendEntity> Friends { get; set; }
+    public ICollection<FriendEntity> Friends { get; set; } = [];
 }

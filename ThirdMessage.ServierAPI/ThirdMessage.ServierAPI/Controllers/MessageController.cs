@@ -24,10 +24,9 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-
+    [Authorize]
     public async Task<ReplyModel<MessageReplyModel[]>> GetMessage(string otheruid)
     {
-        Console.WriteLine("获取与用户 " + otheruid + " 的消息记录");
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
         if (user != null)

@@ -15,6 +15,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     void push_back(const FriendModel& model);
     void remove(const QString& uid);
+    void clear();
+    void Refresh(const QList<FriendModel>& models);
 private:
     QList<FriendModel> datas;
 };
