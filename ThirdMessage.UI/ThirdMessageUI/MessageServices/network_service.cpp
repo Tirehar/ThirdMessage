@@ -42,6 +42,7 @@ void NetworkService::requestCookie() {
     auto cookieJar = manager->cookieJar();
     QUrl cookieUrl("https://localhost:7034");
     auto cookies = cookieJar->cookiesForUrl(cookieUrl);
+    setCookie(cookies);
     saveCookie(cookies);
 }
 

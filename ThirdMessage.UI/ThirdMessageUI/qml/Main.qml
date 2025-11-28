@@ -40,9 +40,16 @@ Window {
                     Layout.fillWidth: true
 
                     FriendSearchEdit{
-                         anchors.fill: parent
+                        anchors.fill: parent
+                        listModel: viewModel.friendSearchListModel
                         onActived: {
                             viewModel.friendAdd(text);
+                        }
+                        onTextChanged: {
+                            viewModel.loadFriendSearchList(text);
+                        }
+                        onSelected: {
+                            viewModel.friendAdd(userName);
                         }
                     }
                 }

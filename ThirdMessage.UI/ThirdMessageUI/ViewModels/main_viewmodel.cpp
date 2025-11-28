@@ -12,6 +12,7 @@
 
 MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
     friendListModel = new FriendListModel(this);
+    friendSearchListModel = new QStringListModel(this);
     messageListModel = new MessageListModel(this);
     QSettings settings("Tirehar", "ThirdMessage");
     uid = settings.value("UID").toString();
@@ -21,11 +22,16 @@ MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
 MainViewModel::~MainViewModel() {
     deleteLater();
     delete friendListModel;
+    delete friendSearchListModel;
     delete messageListModel;
 }
 
 FriendListModel* MainViewModel::getFriendListModel() const{
     return friendListModel;
+}
+
+QStringListModel * MainViewModel::getFriendSearchListModel() const {
+    return friendSearchListModel;
 }
 
 MessageListModel* MainViewModel::getMessageListModel() const {
@@ -45,8 +51,8 @@ void MainViewModel::loadFriendList() {
     });
 }
 
-void MainViewModel::friendAdd(const QString &uid) {
-    auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Friend/FriendRequest?otheruid=" + uid);
+void MainViewModel::friendAdd(const QString &userName) {
+    auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Friend/FriendRequest?userName=" + userName);
     connect(reply, &QNetworkReply::finished,[reply, this] {
         qDebug()<<"Error:"<<reply->error();
         auto bytes = reply->readAll();
@@ -58,17 +64,28 @@ void MainViewModel::friendAdd(const QString &uid) {
     });
 }
 
-void MainViewModel::loadMessageList(QString otherUid) {
+void MainViewModel::loadMessageList(const QString& otherUid) {
     messageListModel->clear();
     auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Message/GetMessage?otheruid=" + otherUid);
     connect(reply, &QNetworkReply::finished,[reply, this, otherUid] {
         auto bytes = reply->readAll();
         auto jsonDoc = QJsonDocument::fromJson(bytes);
-        qDebug()<<"Code is"<<jsonDoc["message"].toString();
         for (auto messageModel: jsonDoc["model"].toArray()) {
-            qDebug()<<"Get";
             auto message = messageModel.toObject();
             messageListModel->push_back(MessageModel(otherUid, message["fromUid"].toString() == uid,  message["content"].toString(), message["time"].toInt()));
         }
+    });
+}
+
+void MainViewModel::loadFriendSearchList(const QString &searchText) {
+    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/SearchFriends?keyword=" + searchText);
+    connect(reply, &QNetworkReply::finished,[reply, this] {
+        auto bytes = reply->readAll();
+        auto jsonDoc = QJsonDocument::fromJson(bytes);
+        QStringList list;
+        for (auto friendModel: jsonDoc["model"].toArray()) {
+            list.push_back(friendModel.toString());
+        }
+        friendSearchListModel->setStringList(list);
     });
 }

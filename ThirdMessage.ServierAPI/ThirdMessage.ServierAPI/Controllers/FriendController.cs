@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Models;
@@ -32,8 +31,6 @@ public class FriendController : ControllerBase
         if (user != null)
         {
             await database.Entry(user).Collection(u => u.Friends).LoadAsync();
-            Console.WriteLine("获取好友列表.用户ID:"+userId);
-            Console.WriteLine("数量:" + user.Friends.Count);
             return new ReplyModel<FriendReplyModel>
             {
                 Code = 0,
@@ -56,20 +53,56 @@ public class FriendController : ControllerBase
         }
     }
 
-    [HttpPost]
-
-    public async Task<ReplyModel<EmptyModel>> FriendRequest([FromQuery]string otheruid)
+    [HttpGet]
+    [Authorize]
+    public async Task<ReplyModel<string[]>> SearchFriends(string keyword)
     {
-        Console.WriteLine("请求添加好友.ID:"+otheruid);
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
-        var otherUser = await userManager.FindByIdAsync(otheruid);
+        if(user != null)
+        {
+            await database.Entry(user).Collection(u => u.Friends).LoadAsync();
+            var friendUids = user.Friends.Select(f => f.Uid).ToHashSet();
+            var matches = await userManager.Users
+                .Where(u => EF.Functions.Like(u.UserName, $"%{keyword}%"))
+                .Where(u => u.Id != userId)
+                .Where(u => !friendUids.Contains(u.Id))
+                .Select(u => u.UserName!)
+                .ToListAsync();
+            if (matches != null && matches.Any())
+            {
+                return new ReplyModel<string[]>()
+                {
+                    Code = 0,
+                    Message = "Success",
+                    Model = matches.ToArray()
+                };
+            }
+        }
+        return new ReplyModel<string[]>()
+        {
+            Code = -1,
+            Message = "No matches found",
+            Model = Array.Empty<string>()
+        };
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<ReplyModel<EmptyModel>> FriendRequest([FromQuery]string userName)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
+        var user = await userManager.FindByIdAsync(userId);
+        var otherUser = await userManager.FindByNameAsync(userName);
+        var otheruid = otherUser?.Id;
         if (user != null && otherUser != null)
         {
             if(userId != otheruid)
             {
-                user.Friends.Add(new() { UserName = otherUser.UserName!, Uid = userId});
+                user.Friends.Add(new() { UserName = otherUser.UserName!, Uid = otheruid! });
+                otherUser.Friends.Add(new() { UserName = user.UserName!, Uid = userId});
                 await userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(otherUser);
                 return new ReplyModel<EmptyModel>
                 {
                     Code = 0,
