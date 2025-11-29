@@ -70,11 +70,13 @@ Window {
                 width:260
             }
             Button{
+                id: loginButton
                 text:"登录"
                 font.pixelSize:15
                 width:260
                 height:48
                 onClicked:{
+                    loginButton.enabled = false;
                     viewModel.login(usernameInput.text, passwordInput.text)
                 }
             }
@@ -89,6 +91,8 @@ Window {
                 loginWindow.close();
                 var mainWindow = Qt.createComponent("Main.qml");
                 mainWindow.createObject(null, { visible: true});
+            }else {
+                loginButton.enabled = true;
             }
         }
     }
