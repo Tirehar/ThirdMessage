@@ -31,6 +31,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton<SignalRBridgeService>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<SignalRBridgeService>());
@@ -43,6 +44,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

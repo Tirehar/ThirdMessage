@@ -1,10 +1,15 @@
 #include "network_service.h"
 
 #include <QNetworkCookieJar>
+#include <QNetworkReply>
 #include <QSettings>
 
 NetworkService::NetworkService() {
     manager = QSharedPointer<QNetworkAccessManager>(new QNetworkAccessManager());
+    connect(manager.data(), &QNetworkAccessManager::sslErrors, this,
+    [](QNetworkReply* reply, const QList<QSslError>&){
+        reply->ignoreSslErrors();
+    });
 }
 
 NetworkService* NetworkService::getInstance() {
