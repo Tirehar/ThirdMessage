@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Hubs;
+using ThirdMessage.ServierAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,9 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<SignalRBridgeService>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<SignalRBridgeService>());
 
 var app = builder.Build();
 
