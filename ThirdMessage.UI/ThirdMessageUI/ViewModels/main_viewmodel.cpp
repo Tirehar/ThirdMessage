@@ -14,16 +14,17 @@ MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
     friendListModel = new FriendListModel(this);
     friendSearchListModel = new QStringListModel(this);
     messageListModel = new MessageListModel(this);
+    messageService = MessageService::getInstance();
+    connect(messageService, &MessageService::messageReceived, this, &MainViewModel::messageResponse);
     QSettings settings("Tirehar", "ThirdMessage");
     uid = settings.value("UID").toString();
     loadFriendList();
 }
 
 MainViewModel::~MainViewModel() {
-    deleteLater();
-    delete friendListModel;
-    delete friendSearchListModel;
-    delete messageListModel;
+    if (messageService) {
+        disconnect(messageService, &MessageService::messageReceived, this, &MainViewModel::messageResponse);
+    }
 }
 
 FriendListModel* MainViewModel::getFriendListModel() const{
@@ -64,7 +65,15 @@ void MainViewModel::friendAdd(const QString &userName) {
     });
 }
 
+void MainViewModel::sendMessage(const QString& text, const QString& toUid){
+    messageService->sendMessage(text, toUid);
+}
+void MainViewModel::messageResponse(const MessageModel &model) {
+    messageListModel->push_back(model);
+}
+
 void MainViewModel::loadMessageList(const QString& otherUid) {
+    setMessageListModel(otherUid);
     messageListModel->clear();
     auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Message/GetMessage?otheruid=" + otherUid);
     connect(reply, &QNetworkReply::finished,[reply, this, otherUid] {
@@ -89,3 +98,17 @@ void MainViewModel::loadFriendSearchList(const QString &searchText) {
         friendSearchListModel->setStringList(list);
     });
 }
+
+void MainViewModel::setMessageListModel(const QString &friendUid) {
+    qDebug()<<"Get"<<friendUid;
+    if (!messageListModels.contains(friendUid)) {
+        qDebug()<<"Create MessageModel";
+        messageListModels[friendUid] = new MessageListModel(this);
+    }
+    if (messageListModel != messageListModels[friendUid]) {
+        messageListModel = messageListModels[friendUid];
+        emit messageListModelChanged();
+    }
+}
+
+

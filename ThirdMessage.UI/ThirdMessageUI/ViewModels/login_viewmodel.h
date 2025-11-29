@@ -16,7 +16,7 @@ public:
     signals:
         Q_SIGNAL void loginResponse(bool successful);
 private:
-    void saveData(const QString& uid);
+    void saveData(const QByteArray& uid);
 };
 
 

@@ -14,9 +14,9 @@ Window {
     minimumWidth: 840
     visible: true
     color: "#E9E9E9"
-
     title: "Third Message"
 
+    property var currentFriendUid
     MainViewModel {
         id: viewModel
     }
@@ -69,6 +69,8 @@ Window {
                             }
                         }
                         onSelected: {
+                            currentFriendUid = uid
+                            messageArea.enabled = true
                             viewModel.loadMessageList(uid)
                         }
                     }
@@ -110,6 +112,7 @@ Window {
                 id: messageArea
                 Layout.preferredHeight: 160
                 Layout.fillWidth: true
+                enabled: false
                 ColumnLayout {
                     anchors.fill: parent
                     Layout.fillWidth: true
@@ -134,8 +137,7 @@ Window {
                             function sendMessage(){
                                 if(messageText.text.trim() === "")
                                     return
-                                //MessageService.sendMessage(messageText.text)
-                                //WebSocketService.sendMessage(messageText.text);
+                                viewModel.sendMessage(messageText.text, currentFriendUid)
                                 messageText.clear()
                             }
                         }
@@ -167,12 +169,4 @@ Window {
         }
     }
 }
-
-    // Connections{
-    //     target: WebSocketService
-    //     function onResponse(response) {
-    //         messageText.text = ""
-    //         console.log("服务器发出回应" + response)
-    //     }
-    // }
 

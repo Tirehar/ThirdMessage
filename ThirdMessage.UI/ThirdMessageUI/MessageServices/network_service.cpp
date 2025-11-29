@@ -38,10 +38,15 @@ void NetworkService::setCookie(const QList<QNetworkCookie> &cookies) {
     this->cookies = cookies;
 }
 
-void NetworkService::requestCookie() {
+QList<QNetworkCookie> NetworkService::getCookies() {
+    return cookies;
+}
+
+void NetworkService::requestCookie(const QByteArray &uid) {
     auto cookieJar = manager->cookieJar();
     QUrl cookieUrl("https://localhost:7034");
     auto cookies = cookieJar->cookiesForUrl(cookieUrl);
+    cookies.append(QNetworkCookie("uid", uid));
     setCookie(cookies);
     saveCookie(cookies);
 }

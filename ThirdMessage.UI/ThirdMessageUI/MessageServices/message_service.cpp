@@ -1,11 +1,15 @@
 #include "message_service.h"
-
-#include <QJsonObject>
-
+#include <QSettings>
+#include "network_service.h"
 #include "Helpers/json_helper.hpp"
+#include "Models/message_model.h"
 
 MessageService::MessageService() {
+    QSettings settings("Tirehar", "ThirdMessage");
+    uid = settings.value("UID").toString();
+    connectServer();
     webSocket = WebSocketService::getInstance();
+    connect(webSocket, &WebSocketService::response, this, &MessageService::messageResponse);
 }
 
 MessageService* MessageService::getInstance() {
@@ -13,10 +17,30 @@ MessageService* MessageService::getInstance() {
     return &instance;
 }
 
-void MessageService::sendMessage(const QString &message) {
+void MessageService::sendMessage(const QString &message, const QString& toUid) const{
     auto content = QJsonObject();
-    content.insert("Uid", 12345);
+    content.insert("Uid", uid);
+    content.insert("ToUid", toUid);
     content.insert("Message", message);
-    content.insert("Time", 100000000);
+    content.insert("Time", QDateTime::currentSecsSinceEpoch());
     webSocket->sendMessage(JsonHelper::toJsonString(content));
+}
+
+void MessageService::connectServer() {
+    auto socketService = WebSocketService::getInstance();
+    socketService->initialize(QUrl("ws://localhost:8080"), NetworkService::getInstance()->getCookies());
+}
+
+void MessageService::messageResponse(const QString &message) {
+    qDebug() << message.toUtf8();
+    auto json = QJsonDocument::fromJson(message.toUtf8());
+    if (json["Code"].toInt() == 0) {
+        auto data = json["Model"];
+        auto content = data["Content"].toString();
+        auto fromUid = data["FromUid"].toString();
+        auto toUid = data["ToUid"].toString();
+        auto time = data["Time"].toInt();
+        MessageModel model(toUid, fromUid.compare(uid), content, time);
+        emit messageReceived(model);
+    }
 }

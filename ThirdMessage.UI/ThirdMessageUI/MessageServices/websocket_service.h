@@ -1,6 +1,7 @@
 #ifndef WEBSOCKET_SERVICE_H
 #define WEBSOCKET_SERVICE_H
 
+#include <QNetworkCookie>
 #include <QWebSocket>
 
 class WebSocketService : public QObject
@@ -8,14 +9,13 @@ class WebSocketService : public QObject
     Q_OBJECT
 public:
     static WebSocketService* getInstance();
-    void initialize(const QUrl& url);
-    void connectServer();
+    void initialize(const QUrl& url, const QList<QNetworkCookie>& cookies);
+    void connectServer(const QNetworkRequest& request);
     Q_INVOKABLE void sendMessage(const QString& message);
 
     signals:
         Q_SIGNAL void response(const QString& response);
 private:
-    QUrl server_url;
     QSharedPointer<QWebSocket> socket;
     WebSocketService();
     void onConnected();

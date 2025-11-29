@@ -22,9 +22,9 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
             auto jsonDoc = QJsonDocument::fromJson(bytes);
             auto code = jsonDoc["code"].toInt();
             if (code == 0) {
-                auto uid = jsonDoc["model"]["uid"].toString();
+                auto uid = jsonDoc["model"]["uid"].toVariant().toByteArray();
                 saveData(uid);
-                NetworkService::getInstance()->requestCookie();
+                NetworkService::getInstance()->requestCookie(uid);
                 loginResponse(true);
                 qDebug() << "Login successful for account:" << account<<";UID:"<<uid;
             } else {
@@ -39,7 +39,7 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
     });
 }
 
-void LoginVIewModel::saveData(const QString& uid) {
+void LoginVIewModel::saveData(const QByteArray& uid) {
     QSettings settings("Tirehar", "ThirdMessage");
     settings.setValue("UID", uid);
     settings.sync();

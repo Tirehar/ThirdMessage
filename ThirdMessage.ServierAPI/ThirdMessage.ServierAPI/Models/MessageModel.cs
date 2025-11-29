@@ -4,7 +4,9 @@ namespace ThirdMessage.ServierAPI.Models;
 
 public class MessageModel
 {
-    public int Uid { get; set; }
+    public string Uid { get; set; }
+
+    public string ToUid { get; set; }
 
     public string Message { get; set; }
 

@@ -38,11 +38,6 @@ int main(int argc, char *argv[])
         engine.loadFromModule("ThirdMessageUI", "LoginWindow");
     }
 
-    auto socketService = WebSocketService::getInstance();
-    socketService->initialize(QUrl("ws://localhost:8080"));
-    socketService->connectServer();
-
-
     qmlRegisterSingletonType<WebSocketService>("ThirdMessageUI.WebSocket", 1, 0, "WebSocketService", [](QQmlEngine *qmlEngine, QJSEngine *jsEngine) -> QObject* {
         return WebSocketService::getInstance();
     });

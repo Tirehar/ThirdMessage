@@ -7,17 +7,19 @@ WebSocketService* WebSocketService::getInstance() {
 
 WebSocketService::WebSocketService() = default;
 
-void WebSocketService::initialize(const QUrl& url) {
-    server_url = url;
+void WebSocketService::initialize(const QUrl& url, const QList<QNetworkCookie>& cookies) {
     socket = QSharedPointer<QWebSocket>(new QWebSocket());
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+    connectServer(request);
     connect(socket.get(), &QWebSocket::connected, this, &WebSocketService::onConnected);
     connect(socket.get(), &QWebSocket::textMessageReceived, this, &WebSocketService::onMessageReceived);
     connect(socket.get(), &QWebSocket::errorOccurred, this, &WebSocketService::onError);
     qDebug()<<"initialize";
 }
 
-void WebSocketService::connectServer() {
-    socket->open(server_url);
+void WebSocketService::connectServer(const QNetworkRequest& request) {
+    socket->open(request);
     qDebug()<<"open";
 }
 
@@ -26,8 +28,8 @@ Q_INVOKABLE void WebSocketService::sendMessage(const QString &message) {
 }
 
 void WebSocketService::onMessageReceived(const QString &message) {
-    response(message);
-    qDebug()<<"Received:"<<message;
+    emit response(message);
+    qDebug()<<"Received";
 }
 
 

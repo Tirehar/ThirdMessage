@@ -39,7 +39,6 @@ public class MessageController : ControllerBase
                 await database.Entry(firend).Collection(u => u.Messages).LoadAsync();
                 var messageEntities = firend.Messages;
                 ICollection<MessageReplyModel> messages = [];
-                Console.WriteLine(messageEntities.Count);
                 foreach (var message in messageEntities)
                 {
                     messages.Add(new MessageReplyModel

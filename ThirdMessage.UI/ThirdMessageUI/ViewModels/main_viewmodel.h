@@ -5,6 +5,8 @@
 #include "Models/message_listmodel.h"
 #include <QStringListModel>
 
+#include "MessageServices/message_service.h"
+
 
 class MainViewModel : public QObject{
     Q_OBJECT
@@ -19,6 +21,7 @@ public:
     MessageListModel* getMessageListModel() const;
     Q_INVOKABLE void loadFriendList();
     Q_INVOKABLE void friendAdd(const QString& uid);
+    Q_INVOKABLE void sendMessage(const QString& text, const QString& toUid);
 public slots:
     void loadMessageList(const QString& otherUid);
     void loadFriendSearchList(const QString& searchText);
@@ -27,10 +30,14 @@ signals:
     void messageListModelChanged();
     void friendSearchListModelChanged();
 private:
+    QMap<QString, MessageListModel*> messageListModels;
+    Q_INVOKABLE void setMessageListModel(const QString& friendUid);
     FriendListModel* friendListModel;
     QStringListModel* friendSearchListModel;
     MessageListModel* messageListModel;
+    const MessageService* messageService;
     QString uid;
+    void messageResponse(const MessageModel& model);
 };
 
 
