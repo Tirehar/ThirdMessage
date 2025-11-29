@@ -46,10 +46,11 @@ public class MessageController : ControllerBase
                          Content = message.Content,
                          FromUid = message.FromUserId,
                          ToUid = message.ToUserId,
-                         Time = TimeHelper.ToUnixSeconds(message.Timestamp)
+                         Time = message.Timestamp
                     });
                 }
-
+                Console.WriteLine("返回消息");
+                Console.WriteLine(messages.Count);
                 return new()
                 {
                     Code = 0,

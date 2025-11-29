@@ -12,7 +12,6 @@ public class ApplicationDbContext : IdentityDbContext<UserEntity>
         optionsBuilder.UseSqlServer(conn);
        // optionsBuilder.LogTo(Console.WriteLine);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

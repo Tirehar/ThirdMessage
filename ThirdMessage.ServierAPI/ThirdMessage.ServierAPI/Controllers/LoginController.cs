@@ -25,7 +25,6 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<ReplyModel<LoginReplyModel>> Login([FromBody] LoginModel model)
     {
-        Console.WriteLine("收到登录请求:账户" + model.Account);
         var user = await userManager.FindByNameAsync(model.Account);
 
         if (user == null)
@@ -88,29 +87,6 @@ public class LoginController : ControllerBase
 
     private async Task<UserEntity> CreateUser(LoginModel model)
     {
-        //var messages = new List<MessageEntity>()
-        //{
-        //    new MessageEntity
-        //    {
-        //        Content = "Hello, I am A",
-        //        Timestamp = DateTime.UtcNow,
-        //        FromUserId = "07152545-f973-47d0-a6f9-4f94ba5580f5",
-        //        ToUserId = "4fa0850b-cf18-4e3d-bd5a-47330900d621"
-        //    },
-        //    new MessageEntity
-        //    {
-        //        Content = "Hello, I am B",
-        //        Timestamp = DateTime.UtcNow.AddSeconds(5),
-        //        FromUserId = "07152545-f973-47d0-a6f9-4f94ba5580f5",
-        //        ToUserId = "07152545-f973-47d0-a6f9-4f94ba5580f5"
-        //    }
-        //};
-
-        //var friends = new List<FriendEntity>
-        //    {
-        //        new FriendEntity { Uid = "07152545-f973-47d0-a6f9-4f94ba5580f5",UserName = "System", Messages=messages },
-        //        new FriendEntity { Uid = "4fa0850b-cf18-4e3d-bd5a-47330900d621", UserName = "TestUser", Messages=messages }
-        //    };
         var user = new UserEntity() { UserName = model.Account, Friends = [] };
         var result = await userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)

@@ -22,19 +22,53 @@ public class ChatHub : Hub
     public async Task SendMessage(string json)
     {
         var model = JsonHelper.ToModel<MessageModel>(json);
-        //将消息存储到数据库
-        var response = new ReplyModel<MessageReplyModel> 
-        { 
-            Message = "Send Success",
-            Code = 0,
-            Model = new()
+        var user = await userManager.FindByIdAsync(model.Uid);
+        var firendUser = await userManager.FindByIdAsync(model.ToUid);
+        if (user != null && firendUser != null) 
+        {
+            //加载发送者好友列表
+            await database.Entry(user).Collection(u => u.Friends).LoadAsync();
+            var firend = user.Friends.FirstOrDefault(f => f.Uid == model.ToUid)!;
+
+            //加载接收者好友列表
+            await database.Entry(firendUser).Collection(u => u.Friends).LoadAsync();
+            var firendOfFirend = firendUser.Friends.FirstOrDefault(f => f.Uid == model.Uid)!;
+
+            //加载消息列表
+            await database.Entry(firend).Collection(u => u.Messages).LoadAsync();
+            await database.Entry(firendOfFirend).Collection(u => u.Messages).LoadAsync();
+
+            var entityForSender = new MessageEntity
             {
-                FromUid = model.Uid,
-                ToUid = model.ToUid,
+                FromUserId = model.Uid,
+                ToUserId = model.ToUid,
                 Content = model.Message,
-                Time = model.Time
-            }
-        };
-        await Clients.All.SendAsync("ReceiveMessage", JsonHelper.ToJson(response));
+                Timestamp = model.Time
+            };
+            var entityForReceiver = new MessageEntity
+            {
+                FromUserId = model.Uid,
+                ToUserId = model.ToUid,
+                Content = model.Message,
+                Timestamp = model.Time
+            };
+
+            firend.Messages.Add(entityForSender);
+            firendOfFirend.Messages.Add(entityForReceiver);
+            await database.SaveChangesAsync();
+            var response = new ReplyModel<MessageReplyModel>
+            {
+                Message = "Send Success",
+                Code = 0,
+                Model = new()
+                {
+                    FromUid = model.Uid,
+                    ToUid = model.ToUid,
+                    Content = model.Message,
+                    Time = model.Time
+                }
+            };
+            await Clients.All.SendAsync("ReceiveMessage", JsonHelper.ToJson(response));
+        }
     }
 }

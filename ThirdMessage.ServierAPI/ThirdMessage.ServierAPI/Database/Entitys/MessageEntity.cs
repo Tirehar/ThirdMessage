@@ -6,5 +6,5 @@ public class MessageEntity
     public string FromUserId { get; set; } = null!;
     public string ToUserId { get; set; } = null!;
     public string Content { get; set; } = null!;
-    public DateTime Timestamp { get; set; }
+    public long Timestamp { get; set; }
 }
