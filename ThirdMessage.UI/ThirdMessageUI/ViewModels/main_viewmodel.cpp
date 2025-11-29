@@ -8,9 +8,13 @@
 #include <QJsonArray>
 #include <QSettings>
 
+#include "Helpers/json_helper.hpp"
 #include "MessageServices/network_service.h"
 
 MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
+    QSettings config("config.ini", QSettings::IniFormat);
+    serverUrl = QUrl(config.value("ServerAddress").toByteArray());
+
     friendListModel = new FriendListModel(this);
     friendSearchListModel = new QStringListModel(this);
     messageListModel = new MessageListModel(this);
@@ -41,7 +45,9 @@ MessageListModel* MainViewModel::getMessageListModel() const {
 
 void MainViewModel::loadFriendList() {
     friendListModel->clear();
-    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/GetFriends");
+    auto url = QUrl(serverUrl);
+    url.setPath("/api/Friend/GetFriends");
+    auto reply = NetworkService::getInstance()->sendGetRequest(url);
     connect(reply, &QNetworkReply::finished,[reply, this] {
         auto bytes = reply->readAll();
         auto jsonDoc = QJsonDocument::fromJson(bytes);
@@ -54,7 +60,10 @@ void MainViewModel::loadFriendList() {
 }
 
 void MainViewModel::friendAdd(const QString &userName) {
-    auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Friend/FriendRequest?userName=" + userName);
+    auto url = QUrl(serverUrl);
+    url.setPath("/api/Friend/FriendRequest");
+    url.setQuery(QUrlQuery("userName=" + userName));
+    auto reply = NetworkService::getInstance()->sendPostRequest(url);
     connect(reply, &QNetworkReply::finished,[reply, this] {
         qDebug()<<"Error:"<<reply->error();
         auto bytes = reply->readAll();
@@ -76,7 +85,10 @@ void MainViewModel::messageResponse(const MessageModel &model) {
 void MainViewModel::loadMessageList(const QString& otherUid) {
     setMessageListModel(otherUid);
     messageListModel->clear();
-    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Message/GetMessage?otheruid=" + otherUid);
+    auto url = QUrl(serverUrl);
+    url.setPath("/api/Message/GetMessage");
+    url.setQuery(QUrlQuery("otheruid=" + otherUid));
+    auto reply = NetworkService::getInstance()->sendGetRequest(url);
     connect(reply, &QNetworkReply::finished,[reply, this, otherUid] {
         auto bytes = reply->readAll();
         auto jsonDoc = QJsonDocument::fromJson(bytes);
@@ -88,7 +100,10 @@ void MainViewModel::loadMessageList(const QString& otherUid) {
 }
 
 void MainViewModel::loadFriendSearchList(const QString &searchText) {
-    auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/SearchFriends?keyword=" + searchText);
+    auto url = QUrl(serverUrl);
+    url.setPath("/api/Friend/SearchFriends");
+    url.setQuery(QUrlQuery("keyword=" + searchText));
+    auto reply = NetworkService::getInstance()->sendGetRequest(url);
     connect(reply, &QNetworkReply::finished,[reply, this] {
         auto bytes = reply->readAll();
         auto jsonDoc = QJsonDocument::fromJson(bytes);

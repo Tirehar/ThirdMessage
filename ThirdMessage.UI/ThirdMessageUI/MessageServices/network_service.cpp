@@ -12,8 +12,8 @@ NetworkService* NetworkService::getInstance() {
     return &instance;
 }
 
-QNetworkReply* NetworkService::sendGetRequest(const QString &url, const QJsonObject &json) {
-    auto request = QNetworkRequest(QUrl(url));
+QNetworkReply* NetworkService::sendGetRequest(const QUrl &url, const QJsonObject &json) {
+    auto request = QNetworkRequest(url);
     request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
@@ -23,8 +23,8 @@ QNetworkReply* NetworkService::sendGetRequest(const QString &url, const QJsonObj
     return manager->get(request);
 }
 
-QNetworkReply* NetworkService::sendPostRequest(const QString &url, const QJsonObject &json) {
-    auto request = QNetworkRequest(QUrl(url));
+QNetworkReply* NetworkService::sendPostRequest(const QUrl &url, const QJsonObject &json) {
+    auto request = QNetworkRequest(url);
     request.setHeader(QNetworkRequest::CookieHeader,  QVariant::fromValue(cookies));
     if (!json.isEmpty()) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
@@ -44,8 +44,8 @@ QList<QNetworkCookie> NetworkService::getCookies() {
 
 void NetworkService::requestCookie(const QByteArray &uid) {
     auto cookieJar = manager->cookieJar();
-    QUrl cookieUrl("https://localhost:7034");
-    auto cookies = cookieJar->cookiesForUrl(cookieUrl);
+    QSettings settings("config.ini", QSettings::IniFormat);
+    auto cookies = cookieJar->cookiesForUrl(QUrl(settings.value("ServerAddress").toByteArray()));
     cookies.append(QNetworkCookie("uid", uid));
     setCookie(cookies);
     saveCookie(cookies);

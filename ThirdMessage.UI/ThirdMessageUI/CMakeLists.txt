@@ -42,6 +42,7 @@ qt_add_qml_module(appThirdMessageUI
         Models/message_listmodel.h Models/message_listmodel.cpp
         RESOURCES
         Image/image.qrc
+        config.ini
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -60,6 +61,12 @@ target_link_libraries(appThirdMessageUI
 )
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::WebSockets)
+
+add_custom_command(TARGET appThirdMessageUI POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/config.ini
+        $<TARGET_FILE_DIR:appThirdMessageUI>/config.ini
+)
 
 include(GNUInstallDirs)
 install(TARGETS appThirdMessageUI

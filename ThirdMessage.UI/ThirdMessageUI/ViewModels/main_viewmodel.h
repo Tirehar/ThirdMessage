@@ -4,6 +4,7 @@
 #include "Models/friend_listmodel.h"
 #include "Models/message_listmodel.h"
 #include <QStringListModel>
+#include <QUrlQuery>
 
 #include "MessageServices/message_service.h"
 
@@ -30,6 +31,7 @@ signals:
     void messageListModelChanged();
     void friendSearchListModelChanged();
 private:
+    QUrl serverUrl;
     QMap<QString, MessageListModel*> messageListModels;
     Q_INVOKABLE void setMessageListModel(const QString& friendUid);
     FriendListModel* friendListModel;

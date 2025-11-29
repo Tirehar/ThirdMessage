@@ -28,7 +28,8 @@ void MessageService::sendMessage(const QString &message, const QString& toUid) c
 
 void MessageService::connectServer() {
     auto socketService = WebSocketService::getInstance();
-    socketService->initialize(QUrl("ws://localhost:8080"), NetworkService::getInstance()->getCookies());
+    QSettings config("config.ini", QSettings::IniFormat);
+    socketService->initialize(QUrl(config.value("BridgeAddress").toByteArray()), NetworkService::getInstance()->getCookies());
 }
 
 void MessageService::messageResponse(const QString &message) {

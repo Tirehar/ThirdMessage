@@ -9,8 +9,8 @@ class NetworkService : public QObject
 {
     Q_OBJECT
 public:
-    QNetworkReply* sendGetRequest(const QString &url, const QJsonObject &json = QJsonObject());
-    QNetworkReply* sendPostRequest(const QString &url, const QJsonObject &json = QJsonObject());
+    QNetworkReply* sendGetRequest(const QUrl &url, const QJsonObject &json = QJsonObject());
+    QNetworkReply* sendPostRequest(const QUrl &url, const QJsonObject &json = QJsonObject());
     void setCookie(const QList<QNetworkCookie> &cookies);
     void requestCookie(const QByteArray &uid);
     void saveCookie(const QList<QNetworkCookie> &cookies);

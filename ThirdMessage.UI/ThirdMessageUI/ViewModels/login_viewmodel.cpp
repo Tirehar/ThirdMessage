@@ -12,10 +12,17 @@
 #include "MessageServices/network_service.h"
 #include "Models/login_model.h"
 
+LoginVIewModel::LoginVIewModel() {
+    QSettings settings("config.ini", QSettings::IniFormat);
+    serverUrl = QUrl(settings.value("ServerAddress").toByteArray());
+}
+
 void LoginVIewModel::login(const QString &account, const QString &password) {
     auto model = LoginModel(account, password);
     auto content = JsonHelper::toJsonObject(&model);
-    auto reply = NetworkService::getInstance()->sendPostRequest("https://localhost:7034/api/Login/Login", content);
+    auto url = QUrl(serverUrl);
+    url.setPath("/api/Login/Login");
+    auto reply = NetworkService::getInstance()->sendPostRequest(url, content);
     connect(reply, &QNetworkReply::finished, [reply, account, this] {
         if (reply->error() == QNetworkReply::NoError) {
             auto bytes = reply->readAll();
