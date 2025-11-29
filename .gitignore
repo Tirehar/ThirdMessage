@@ -368,6 +368,8 @@ ThirdMessage.UI/ThirdMessageUI/build/
 ThirdMessage.UI/ThirdMessageUI/cmake-build-debug-mingw_qt/
 ThirdMessage.APIBridge/.idea/
 ThirdMessage.APIBridge/.mvn/
+ThirdMessage.APIBridge/target
 ThirdMessage.ServierAPI/ThirdMessage.ServierAPI/lib/
 ThirdMessage.ServierAPI/.idea/
-ThirdMessage.ServierAPI/ThirdMessage.ServierAPI/Migrations
+ThirdMessage.ServierAPI/ThirdMessage.ServierAPI/Migrations/
+/ThirdMessage.ServierAPI/ThirdMessage.ServierAPI/Migrations/

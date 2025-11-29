@@ -40,6 +40,7 @@ MessageListModel* MainViewModel::getMessageListModel() const {
 }
 
 void MainViewModel::loadFriendList() {
+    friendListModel->clear();
     auto reply = NetworkService::getInstance()->sendGetRequest("https://localhost:7034/api/Friend/GetFriends");
     connect(reply, &QNetworkReply::finished,[reply, this] {
         auto bytes = reply->readAll();

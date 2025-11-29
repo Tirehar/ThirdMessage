@@ -40,7 +40,7 @@ void MessageService::messageResponse(const QString &message) {
         auto fromUid = data["FromUid"].toString();
         auto toUid = data["ToUid"].toString();
         auto time = data["Time"].toInt();
-        MessageModel model(toUid, fromUid.compare(uid), content, time);
+        MessageModel model(toUid, !fromUid.compare(uid), content, time);
         emit messageReceived(model);
     }
 }

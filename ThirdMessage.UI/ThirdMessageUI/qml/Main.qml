@@ -1,8 +1,6 @@
 import QtQuick
 import QtQuick.Controls.Windows
 import QtQuick.Shapes
-// import ThirdMessageUI.WebSocket
-// import ThirdMessageUI.Message
 import ThirdMessageUI.ViewModels
 import QtQuick.Layouts
 import QtQml.Models
@@ -71,10 +69,31 @@ Window {
                         onSelected: {
                             currentFriendUid = uid
                             messageArea.enabled = true
+                            sendButton.enabled = true
                             viewModel.loadMessageList(uid)
                         }
                     }
                     property bool isSelected: false
+                    MouseArea{
+                        anchors.fill:parent
+                        acceptedButtons: Qt.RightButton
+                        onClicked:{
+                            if (mouse.button === Qt.RightButton) {
+                                firendListMenu.popup()
+                            }
+                        }
+                    }
+                    Menu{
+                        id: firendListMenu
+                        MenuItem{
+                            text:"刷新"
+                            onTriggered:{
+                                messageArea.enabled = false
+                                sendButton.enabled = false
+                                viewModel.loadFriendList()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -155,6 +174,8 @@ Window {
                             }
 
                             SendButton {
+                                id: sendButton
+                                enabled: false
                                 Layout.alignment: Qt.AlignRight
                                 Layout.rightMargin: 10;
                                 Layout.bottomMargin: 20;
