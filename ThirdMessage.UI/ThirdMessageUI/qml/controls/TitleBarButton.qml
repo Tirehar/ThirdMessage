@@ -3,8 +3,8 @@ import QtQuick.Controls
 
 Rectangle {
     id: root
-    width: 32
-    height: 31
+    width: parent.height
+    height: parent.height
     states: [
         State{
             name: "normal"

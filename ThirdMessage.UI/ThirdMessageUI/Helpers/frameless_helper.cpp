@@ -81,7 +81,6 @@ bool FramelessHelper::nativeEventFilter(const QByteArray &eventType, void *messa
             // 如果返回 0 (且 wParam 为 TRUE)，表示整个窗口都是客户区
             // 这样就去掉了系统自带的标题栏，但保留了上面的 Style 带来的动画特性
             if (msg->wParam == TRUE) {
-                qDebug()<<"Window Max";
                 // 处理最大化时的显示器边界溢出问题
                 NCCALCSIZE_PARAMS* params = reinterpret_cast<NCCALCSIZE_PARAMS*>(msg->lParam);
                 if (IsZoomed(hwnd)) {

@@ -17,6 +17,7 @@ Window {
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: 0
         AppTitleBar {
             title: root.title
             currentWindow: root

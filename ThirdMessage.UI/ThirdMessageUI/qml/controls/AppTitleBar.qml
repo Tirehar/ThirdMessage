@@ -13,12 +13,12 @@ Item {
     RowLayout{
         anchors.fill: parent
         RowLayout{
+            Layout.fillHeight: true
             Image {
                 id:logo
                 Layout.preferredWidth: 20
                 Layout.preferredHeight: 20
                 Layout.leftMargin: 4
-                Layout.rightMargin: 4
                 fillMode: Image.PreserveAspectFit
                 source: "qrc:/AppLogo.png"
             }
@@ -39,6 +39,7 @@ Item {
             }
         }
         Row{
+            Layout.fillHeight: true
             TitleBarButton{
                 visible: currentWindow.logoutButtonEnabled
                 icon: "qrc:/icon/Logout.png"
