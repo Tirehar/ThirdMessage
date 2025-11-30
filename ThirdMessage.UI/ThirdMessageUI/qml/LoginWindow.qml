@@ -2,17 +2,19 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import ThirdMessageUI.ViewModels
+import "./controls"
 
-Window {
+AppWindow{
     id: loginWindow
     width: 640
     height: 360
     visible: true
-    title:"Third Message Login"
+    canResize: false
+    logoutButtonEnabled: false
+    title:"ThirdMessage Login"
     LoginViewModel{
         id:viewModel
     }
-
     RowLayout{
         anchors.fill: parent
         Item{
@@ -86,11 +88,11 @@ Window {
     Connections{
         target: viewModel
         function onLoginResponse(successful){
-            console.debug("登录回应：" + successful)
             if(successful){
-                loginWindow.close();
+                loginWindow.closeWindow();
                 var mainWindow = Qt.createComponent("Main.qml");
-                mainWindow.createObject(null, { visible: true});
+                mainWindow.createObject();
+                mainWindow.show()
             }else {
                 loginButton.enabled = true;
             }

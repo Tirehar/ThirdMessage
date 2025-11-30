@@ -5,13 +5,12 @@ import ThirdMessageUI.ViewModels
 import QtQuick.Layouts
 import QtQml.Models
 import "./controls"
-Window {
+AppWindow {
     width: 1080
     height: 680
     minimumHeight: 480
     minimumWidth: 840
     visible: true
-    color: "#E9E9E9"
     title: "Third Message"
 
     property var currentFriendUid

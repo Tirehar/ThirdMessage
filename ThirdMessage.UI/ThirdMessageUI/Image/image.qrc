@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>AppLogo.png</file>
+        <file>icon/Close.png</file>
+        <file>icon/Maximize.png</file>
+        <file>icon/Minimize.png</file>
+        <file>icon/ReMaximize.png</file>
+        <file>icon/Logout.png</file>
     </qresource>
 </RCC>

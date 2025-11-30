@@ -1,19 +1,15 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
-#include <QIcon>
 #include <QSettings>
 
+#include "Helpers/frameless_helper.h"
 #include "MessageServices/message_service.h"
 #include "MessageServices/network_service.h"
 #include "MessageServices/websocket_service.h"
-#include "Models/friend_listmodel.h"
 #include "ViewModels/login_viewmodel.h"
 #include "ViewModels/main_viewmodel.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
@@ -24,6 +20,7 @@ int main(int argc, char *argv[])
 
     app.setWindowIcon(QIcon(":/AppLogo.png"));
 
+    qmlRegisterType<FramelessHelper>("ThirdMessageUI.Helpers", 1, 0, "FramelessHelper");
     qmlRegisterType<MainViewModel>("ThirdMessageUI.ViewModels", 1, 0, "MainViewModel");
     qmlRegisterType<LoginVIewModel>("ThirdMessageUI.ViewModels", 1, 0, "LoginViewModel");
 

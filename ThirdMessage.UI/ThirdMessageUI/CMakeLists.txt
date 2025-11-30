@@ -31,6 +31,9 @@ qt_add_qml_module(appThirdMessageUI
         qml/controls/FriendListItem.qml
         qml/controls/MessageListItem.qml
         qml/controls/FriendSearchEdit.qml
+        qml/controls/AppTitleBar.qml
+        qml/controls/AppWindow.qml
+        qml/controls/TitleBarButton.qml
         SOURCES
         MessageServices/websocket_service.h
         MessageServices/websocket_service.cpp
@@ -40,6 +43,7 @@ qt_add_qml_module(appThirdMessageUI
         MessageServices/message_service.h MessageServices/message_service.cpp
         Models/friend_listmodel.h Models/friend_listmodel.cpp
         Models/message_listmodel.h Models/message_listmodel.cpp
+        Helpers/frameless_helper.h Helpers/frameless_helper.cpp
         RESOURCES
         Image/image.qrc
         config.ini
@@ -61,6 +65,7 @@ target_link_libraries(appThirdMessageUI
 )
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::Core)
 target_link_libraries(appThirdMessageUI PRIVATE Qt6::WebSockets)
+target_link_libraries(appThirdMessageUI PRIVATE dwmapi user32)
 
 add_custom_command(TARGET appThirdMessageUI POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
