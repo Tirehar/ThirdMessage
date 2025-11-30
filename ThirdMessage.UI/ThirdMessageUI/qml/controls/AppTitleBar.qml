@@ -44,7 +44,10 @@ Item {
                 visible: currentWindow.logoutButtonEnabled
                 icon: "qrc:/icon/Logout.png"
                 onClicked: {
-
+                    currentWindow.closeWindow()
+                    var loginWindow = Qt.createComponent(Qt.resolvedUrl("../LoginWindow.qml"))
+                    loginWindow.createObject();
+                    loginWindow.show()
                 }
             }
             TitleBarButton{

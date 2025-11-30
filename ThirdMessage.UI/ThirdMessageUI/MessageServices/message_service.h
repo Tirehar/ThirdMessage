@@ -16,7 +16,6 @@ public:
     Q_SIGNAL void messageReceived(const MessageModel &messageModel);
 private:
     WebSocketService *webSocket;
-    QString uid;
     void messageResponse(const QString &message);
 };
 

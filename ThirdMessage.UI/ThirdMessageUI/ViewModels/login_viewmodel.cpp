@@ -48,6 +48,7 @@ void LoginVIewModel::login(const QString &account, const QString &password) {
 
 void LoginVIewModel::saveData(const QByteArray& uid) {
     QSettings settings("Tirehar", "ThirdMessage");
+    qDebug()<<"Set UID:"<<uid;
     settings.setValue("UID", uid);
     settings.sync();
 }

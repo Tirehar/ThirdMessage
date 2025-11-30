@@ -5,8 +5,6 @@
 #include "Models/message_model.h"
 
 MessageService::MessageService() {
-    QSettings settings("Tirehar", "ThirdMessage");
-    uid = settings.value("UID").toString();
     connectServer();
     webSocket = WebSocketService::getInstance();
     connect(webSocket, &WebSocketService::response, this, &MessageService::messageResponse);
@@ -18,6 +16,8 @@ MessageService* MessageService::getInstance() {
 }
 
 void MessageService::sendMessage(const QString &message, const QString& toUid) const{
+    QSettings settings("Tirehar", "ThirdMessage");
+    auto uid = settings.value("UID").toString();
     auto content = QJsonObject();
     content.insert("Uid", uid);
     content.insert("ToUid", toUid);
@@ -36,6 +36,8 @@ void MessageService::messageResponse(const QString &message) {
     qDebug() << message.toUtf8();
     auto json = QJsonDocument::fromJson(message.toUtf8());
     if (json["Code"].toInt() == 0) {
+        QSettings settings("Tirehar", "ThirdMessage");
+        auto uid = settings.value("UID").toString();
         auto data = json["Model"];
         auto content = data["Content"].toString();
         auto fromUid = data["FromUid"].toString();
