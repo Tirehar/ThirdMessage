@@ -19,6 +19,7 @@ MainViewModel::MainViewModel(QObject *parent) : QObject(parent) {
     friendSearchListModel = new QStringListModel(this);
     messageListModel = new MessageListModel(this);
     messageService = MessageService::getInstance();
+    messageService->connectServer();
     connect(messageService, &MessageService::messageReceived, this, &MainViewModel::messageResponse);
     QSettings settings("Tirehar", "ThirdMessage");
     uid = settings.value("UID").toString();

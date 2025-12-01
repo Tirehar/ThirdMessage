@@ -37,7 +37,7 @@ private:
     FriendListModel* friendListModel;
     QStringListModel* friendSearchListModel;
     MessageListModel* messageListModel;
-    const MessageService* messageService;
+    MessageService* messageService;
     QString uid;
     void messageResponse(const MessageModel& model);
 };

@@ -5,7 +5,7 @@
 #include "Models/message_model.h"
 
 MessageService::MessageService() {
-    connectServer();
+    //connectServer();
     webSocket = WebSocketService::getInstance();
     connect(webSocket, &WebSocketService::response, this, &MessageService::messageResponse);
 }
@@ -29,7 +29,14 @@ void MessageService::sendMessage(const QString &message, const QString& toUid) c
 void MessageService::connectServer() {
     auto socketService = WebSocketService::getInstance();
     QSettings config("config.ini", QSettings::IniFormat);
-    socketService->initialize(QUrl(config.value("BridgeAddress").toByteArray()), NetworkService::getInstance()->getCookies());
+    QUrl url = QUrl(config.value("BridgeAddress").toByteArray());
+    auto cookies = NetworkService::getInstance()->getCookies();
+    if (socketService->getConnected()) {
+        socketService->disconnectServer();
+        socketService->connectServer(url, cookies);
+    }else {
+        socketService->initialize(url, cookies);
+    }
 }
 
 void MessageService::messageResponse(const QString &message) {

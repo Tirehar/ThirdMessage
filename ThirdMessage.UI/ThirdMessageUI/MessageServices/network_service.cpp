@@ -39,7 +39,9 @@ QNetworkReply* NetworkService::sendPostRequest(const QUrl &url, const QJsonObjec
     return manager->post(request, QByteArray());
 }
 
-void NetworkService::setCookie(const QList<QNetworkCookie> &cookies) {
+void NetworkService::setCookie(QList<QNetworkCookie>& cookies, const QByteArray& uid) {
+    auto cookie = QNetworkCookie("uid", uid);
+    cookies.append(cookie);
     this->cookies = cookies;
 }
 
@@ -51,8 +53,7 @@ void NetworkService::requestCookie(const QByteArray &uid) {
     auto cookieJar = manager->cookieJar();
     QSettings settings("config.ini", QSettings::IniFormat);
     auto cookies = cookieJar->cookiesForUrl(QUrl(settings.value("ServerAddress").toByteArray()));
-    cookies.append(QNetworkCookie("uid", uid));
-    setCookie(cookies);
+    setCookie(cookies, uid);
     saveCookie(cookies);
 }
 
