@@ -9,6 +9,7 @@ Window {
     default property alias content: container.data
     property bool canResize: true
     property bool logoutButtonEnabled: true
+    signal logout()
 
     FramelessHelper {
         id: framelessHelper

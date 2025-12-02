@@ -20,13 +20,13 @@ AppWindow{
         Item{
             Layout.preferredWidth: parent.width / 2
             Layout.preferredHeight: parent.height
-            Rectangle{
-                anchors.fill: parent
-                anchors.margins: 24
+            Column{
+                anchors.centerIn:parent
+                spacing: 10
                 Image {
                     id:logo
-                    anchors.centerIn: parent
-                    width: Math.min(parent.width * 0.6, 280)
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: Math.min(parent.width * 0.8, 280)
                     height: width
                     fillMode: Image.PreserveAspectFit
                     source: "qrc:/AppLogo.png"
@@ -44,6 +44,12 @@ AppWindow{
                         opacity = 1.0
                         scale = 1.0
                     }
+                }
+                Label{
+                    text:"Third Message"
+                    font.pixelSize:22
+                    color:"#515151"
+                    horizontalAlignment: Text.Center
                 }
             }
         }

@@ -44,6 +44,7 @@ Item {
                 visible: currentWindow.logoutButtonEnabled
                 icon: "qrc:/icon/Logout.png"
                 onClicked: {
+                    currentWindow.logout()
                     currentWindow.closeWindow()
                     var loginWindow = Qt.createComponent(Qt.resolvedUrl("../LoginWindow.qml"))
                     loginWindow.createObject();

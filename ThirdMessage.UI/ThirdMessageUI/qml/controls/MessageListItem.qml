@@ -4,15 +4,14 @@ import QtQuick.Controls
 Item {
     id: root
     width: Math.min(maxWidth, messageText.implicitWidth)
-    height: Math.min(maxHeight, messageText.implicitHeight)
-    anchors.right: isMy ? parent.right : undefined
-    anchors.left: !isMy ? parent.left : undefined
+    height: messageText.implicitHeight
+    anchors.right: isMy && parent ? parent.right : undefined
+    anchors.left: !isMy && parent ? parent.left : undefined
     anchors.margins: 10
 
     property color myMessageColor: "#c6e7f8"
     property color otherMessageColor: "#efefef"
-    property real maxWidth: 260
-    property real maxHeight: 200
+    property real maxWidth: 320
 
     Rectangle{
         anchors.fill: parent

@@ -22,6 +22,7 @@ public:
     MessageListModel* getMessageListModel() const;
     Q_INVOKABLE void friendAdd(const QString& uid);
     Q_INVOKABLE void sendMessage(const QString& text, const QString& toUid);
+    Q_INVOKABLE void logout();
 public slots:
     void loadMessageList(const QString& otherUid);
     void loadFriendSearchList(const QString& searchText);
@@ -30,6 +31,7 @@ signals:
     void friendListModelChanged();
     void messageListModelChanged();
     void friendSearchListModelChanged();
+    void messageReceived(bool isMy);
 private:
     QUrl serverUrl;
     QMap<QString, MessageListModel*> messageListModels;

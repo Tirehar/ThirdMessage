@@ -124,6 +124,15 @@ AppWindow {
                     }
                     delegate: MessageListItem {
                     }
+
+                    Connections{
+                        target: viewModel
+                        onMessageReceived: function(isMy) {
+                            if(isMy || messageList.atYEnd) {
+                                messageList.positionViewAtEnd()
+                            }
+                        }
+                    }
                 }
             }
             Rectangle {
@@ -187,6 +196,10 @@ AppWindow {
                 }
             }
         }
+    }
+
+    onLogout: {
+        viewModel.logout()
     }
 }
 

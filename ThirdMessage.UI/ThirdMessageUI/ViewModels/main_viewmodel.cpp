@@ -4,6 +4,7 @@
 
 #include "main_viewmodel.h"
 
+#include <qcolor.h>
 #include <QNetworkReply>
 #include <QJsonArray>
 #include <QSettings>
@@ -79,8 +80,16 @@ void MainViewModel::friendAdd(const QString &userName) {
 void MainViewModel::sendMessage(const QString& text, const QString& toUid){
     messageService->sendMessage(text, toUid);
 }
+
+void MainViewModel::logout() {
+    QSettings settings("Tirehar", "ThirdMessage");
+    settings.clear();
+    settings.sync();
+}
+
 void MainViewModel::messageResponse(const MessageModel &model) {
     messageListModel->push_back(model);
+    emit messageReceived(model.isMy);
 }
 
 void MainViewModel::loadMessageList(const QString& otherUid) {
