@@ -60,7 +60,6 @@ public class APIBridge extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, String messageJson) {
-        System.out.println("Message: " + messageJson);
         signalRClient.sendMessage(messageJson);
     }
 

@@ -16,16 +16,19 @@ public class FriendController : ControllerBase
 {
     private readonly ApplicationDbContext database;
     private readonly UserManager<UserEntity> userManager;
-    public FriendController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager)
+    private readonly ILogger<FriendController> logger;
+    public FriendController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager, ILogger<FriendController> logger)
     {
         this.userManager = userManager;
         this.database = dbContext;
+        this.logger = logger;
     }
 
     [HttpGet]
     [Authorize]
     public async Task<ReplyModel<FriendReplyModel>> GetFriends()
     {
+        logger.LogInformation("GetFriends called");
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
         if (user != null)
@@ -57,6 +60,7 @@ public class FriendController : ControllerBase
     [Authorize]
     public async Task<ReplyModel<string[]>> SearchFriends(string keyword)
     {
+        logger.LogInformation("SearchFriends called with keyword: {keyword}", keyword);
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
         if(user != null)
@@ -91,6 +95,7 @@ public class FriendController : ControllerBase
     [Authorize]
     public async Task<ReplyModel<EmptyModel>> FriendRequest([FromQuery]string userName)
     {
+        logger.LogInformation("FriendRequest called for userName: {userName}", userName);
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
         var otherUser = await userManager.FindByNameAsync(userName);

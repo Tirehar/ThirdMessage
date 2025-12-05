@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Console;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Database.Entitys;
 using ThirdMessage.ServierAPI.Hubs;
@@ -10,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.WebHost.UseUrls("https://localhost:7034");
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.SingleLine = true;
+    options.TimestampFormat = "[HH:mm:ss]";
+    options.ColorBehavior = LoggerColorBehavior.Enabled;
+});
+
 builder.Services.AddIdentityCore<UserEntity>().AddEntityFrameworkStores<ApplicationDbContext>().AddSignInManager();
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddCookie(IdentityConstants.ApplicationScheme, options =>
 {
@@ -52,4 +61,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
 
+app.Logger.LogInformation("Server Started...");
+
 app.Run();
+
+

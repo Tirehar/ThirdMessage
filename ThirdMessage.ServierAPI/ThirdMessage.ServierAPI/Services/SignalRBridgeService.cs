@@ -7,11 +7,13 @@ public class SignalRBridgeService : IHostedService, IDisposable
     private Process? _process;
     private readonly string _jarPath;
     private readonly string _javaExe;
+    private readonly ILogger<SignalRBridgeService> logger;
 
-    public SignalRBridgeService()
+    public SignalRBridgeService(ILogger<SignalRBridgeService> logger)
     {
         _javaExe = "java";
         _jarPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "ThirdMessage.APIBridge-1.0.jar");
+        this.logger = logger;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -36,25 +38,21 @@ public class SignalRBridgeService : IHostedService, IDisposable
             _process = new Process { StartInfo = psi, EnableRaisingEvents = true };
             _process.OutputDataReceived += (s, e) =>
             {
-                Console.WriteLine("BridgeService:" + e.Data);
+                logger.LogInformation(e.Data);
             };
             _process.ErrorDataReceived += (s, e) =>
             {
-                Console.WriteLine("BridgeService:" + e.Data);
-            };
-            _process.Exited += (s, e) =>
-            {
-                //_logger.LogWarning("JAR 进程已退出，退出码 {Code}", _process?.ExitCode);
+                logger.LogError(e.Data);
             };
 
-            //_logger.LogInformation("启动 JAR: {Cmd} {Args}", psi.FileName, psi.Arguments);
+            logger.LogInformation("Starting: {Cmd} {Args}", psi.FileName, psi.Arguments);
             _process.Start();
             _process.BeginOutputReadLine();
             _process.BeginErrorReadLine();
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, "启动 JAR 时发生异常");
+            logger.LogError(ex.Message);
         }
 
         return Task.CompletedTask;
@@ -62,19 +60,18 @@ public class SignalRBridgeService : IHostedService, IDisposable
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("尝试停止");
         try
         {
             if (_process != null && !_process.HasExited)
             {
-                Console.WriteLine("停止 JAR 进程 (pid={0})", _process.Id);
+                logger.LogWarning("Stopped (pid={0})", _process.Id);
                 _process.Kill(entireProcessTree: true);
                 _process.WaitForExit(5000);
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine("停止 JAR 时发生异常:" + ex.Message);
+            logger.LogError("Stop Error:" + ex.Message);
         }
         finally
         {

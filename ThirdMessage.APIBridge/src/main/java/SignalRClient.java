@@ -11,7 +11,6 @@ import utils.SSLUtils;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
-import java.lang.reflect.Type;
 
 public class SignalRClient {
     private final Gson gson = new GsonBuilder().create();
@@ -34,7 +33,6 @@ public class SignalRClient {
 
         hubConnection.on("ReceiveMessage", (response) -> {
             try {
-                System.out.println("Received from SignalR Hub: " + response);
                 ReplyModel<ReceiveMessageModel> model = gson.fromJson(response, new TypeToken<ReplyModel<ReceiveMessageModel>>(){}.getType());
                 if (model.getCode() == 0) {
                     var messageModel = model.getModel();

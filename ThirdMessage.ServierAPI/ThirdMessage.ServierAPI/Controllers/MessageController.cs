@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using ThirdMessage.ServierAPI.Database;
 using ThirdMessage.ServierAPI.Database.Entitys;
-using ThirdMessage.ServierAPI.Helper;
-using ThirdMessage.ServierAPI.Models;
 using ThirdMessage.ServierAPI.Models.ReplyModels;
 
 namespace ThirdMessage.ServierAPI.Controllers;
@@ -17,16 +14,19 @@ public class MessageController : ControllerBase
 {
     private readonly ApplicationDbContext database;
     private readonly UserManager<UserEntity> userManager;
-    public MessageController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager) 
+    private readonly ILogger<MessageController> logger;
+    public MessageController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager, ILogger<MessageController> logger) 
     { 
         this.database = dbContext;
         this.userManager = userManager;
+        this.logger = logger;
     }
 
     [HttpGet]
     [Authorize]
     public async Task<ReplyModel<MessageReplyModel[]>> GetMessage(string otheruid)
     {
+        logger.LogInformation("GetMessage called for uid: {otheruid}", otheruid);
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity?.Name;
         var user = await userManager.FindByIdAsync(userId);
         if (user != null)
@@ -49,8 +49,6 @@ public class MessageController : ControllerBase
                          Time = message.Timestamp
                     });
                 }
-                Console.WriteLine("返回消息");
-                Console.WriteLine(messages.Count);
                 return new()
                 {
                     Code = 0,

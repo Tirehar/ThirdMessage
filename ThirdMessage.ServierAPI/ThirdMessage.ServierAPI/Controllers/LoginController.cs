@@ -15,22 +15,23 @@ public class LoginController : ControllerBase
 {
     private readonly ApplicationDbContext database;
     private readonly UserManager<UserEntity> userManager;
+    private readonly ILogger<LoginController> logger;
 
-    public LoginController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager)
+    public LoginController(ApplicationDbContext dbContext, UserManager<UserEntity> userManager, ILogger<LoginController> logger)
     {
         this.database = dbContext;
         this.userManager = userManager;
+        this.logger = logger;
     }
 
     [HttpPost]
     public async Task<ReplyModel<LoginReplyModel>> Login([FromBody] LoginModel model)
     {
+        logger.LogInformation("Login attempt for account: {Account}", model.Account);
         var user = await userManager.FindByNameAsync(model.Account);
 
         if (user == null)
         {
-            //若不存在则自动注册
-            Console.WriteLine("用户不存在，自动注册");
             user = await CreateUser(model);
         }
         else
@@ -71,6 +72,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<ReplyModel<LoginReplyModel>> Register([FromBody] LoginModel model)
     {
+        logger.LogInformation("Registration attempt for account: {Account}", model.Account);
         var user = await CreateUser(model);
 
         return new ReplyModel<LoginReplyModel>
@@ -87,13 +89,14 @@ public class LoginController : ControllerBase
 
     private async Task<UserEntity> CreateUser(LoginModel model)
     {
+        logger.LogInformation("Creating user account: {Account}", model.Account);
         var user = new UserEntity() { UserName = model.Account, Friends = [] };
         var result = await userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
             {
-                Console.WriteLine(error.Description);
+                logger.LogError(error.Description);
             }
         }
         return user;

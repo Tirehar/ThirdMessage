@@ -13,10 +13,12 @@ public class ChatHub : Hub
 {
     private readonly ApplicationDbContext database;
     private readonly UserManager<UserEntity> userManager;
-    public ChatHub(ApplicationDbContext dbContext, UserManager<UserEntity> userManager)
+    private readonly ILogger<ChatHub> logger;
+    public ChatHub(ApplicationDbContext dbContext, UserManager<UserEntity> userManager, ILogger<ChatHub> logger)
     {
         this.database = dbContext;
         this.userManager = userManager;
+        this.logger = logger;
     }
     //[Authorize]
     public async Task SendMessage(string json)
@@ -68,6 +70,7 @@ public class ChatHub : Hub
                     Time = model.Time
                 }
             };
+            logger.LogInformation("User {Uid} sent message to {ToUid}: {Message}", model.Uid, model.ToUid, model.Message);
             await Clients.All.SendAsync("ReceiveMessage", JsonHelper.ToJson(response));
         }
     }
