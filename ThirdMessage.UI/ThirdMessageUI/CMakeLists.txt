@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ThirdMessageUI VERSION 0.1 LANGUAGES CXX)
+project(ThirdMessageUI VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
@@ -8,9 +8,6 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS WebSockets)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -20,6 +17,7 @@ qt_add_executable(appThirdMessageUI
     Models/login_model.h Models/login_model.cpp
     Models/friend_model.h Models/friend_model.cpp
     Models/message_model.h Models/message_model.cpp
+    icon.rc
 )
 
 qt_add_qml_module(appThirdMessageUI
@@ -54,9 +52,9 @@ qt_add_qml_module(appThirdMessageUI
 # explicit, fixed bundle identifier manually though.
 set_target_properties(appThirdMessageUI PROPERTIES
 #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appThirdMessageUI
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
+#    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+#    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+#    MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 

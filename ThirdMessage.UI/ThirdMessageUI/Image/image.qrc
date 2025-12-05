@@ -6,5 +6,6 @@
         <file>icon/Minimize.png</file>
         <file>icon/ReMaximize.png</file>
         <file>icon/Logout.png</file>
+		<file>icon/AppIcon.ico</file>
     </qresource>
 </RCC>
